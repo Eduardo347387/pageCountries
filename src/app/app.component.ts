@@ -6,9 +6,11 @@ import {PageEvent} from '@angular/material/paginator';
   styleUrls: ['./_appComponent.scss']
 })
 export class AppComponent  {
+
   selectedValue?: string;
   invertebrates?: string = '';
   
+  // sele
 
   length = 13;
   pageSize = 13;

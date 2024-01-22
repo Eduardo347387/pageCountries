@@ -1,0 +1,15 @@
+<header class="header">
+    <h1 class="title">Where in the world?</h1>
+    <button class="button" (click)="FnmodeButton()">
+        <ng-container *ngIf="modolight">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="light_mode"></mat-icon>
+            <p class="buttonText">Light Mode</p>
+        </ng-container>
+       
+        <ng-container *ngIf="modeDark">
+            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="bedtime"></mat-icon>
+            <p class="buttonText">Dark Mode</p>
+        </ng-container>
+        
+    </button>
+</header>

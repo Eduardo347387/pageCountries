@@ -19,10 +19,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule} from '@angular/material/paginator';
 import { JsonPipe } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
