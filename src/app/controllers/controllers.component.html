@@ -1,0 +1,46 @@
+
+<div class="container-controllers">
+
+    <mat-form-field  class="custom-light-theme"appearance="outline">
+        <mat-label>Search</mat-label>
+        <input class="search" matInput placeholder="Country">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+
+    <mat-form-field>
+        <mat-icon matSuffix>sort</mat-icon>
+        <mat-label>sortBy</mat-label>
+        <mat-select [(ngModel)]="selectedValue" name="food">
+            <ul *ngFor="let sort of sortBy">
+                <mat-option [value]="sort.value">{{sort.viewValue}}</mat-option>
+            </ul>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-icon matSuffix>filter_alt</mat-icon>
+        <mat-label>Filter By</mat-label>
+        <mat-select [(ngModel)]="selectedValue">
+            <mat-option>
+                <button mat-button [matMenuTriggerFor]="regiones">Regiones</button>
+                <mat-menu #regiones="matMenu">
+                    <ul *ngFor="let region of regions">
+                        <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
+                    </ul>
+                </mat-menu>
+                <mat-checkbox>UN Member</mat-checkbox>
+            </mat-option>
+        
+        </mat-select>
+    </mat-form-field>
+ 
+</div>
+
+<div class="container-paginador">
+    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+        [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+        [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
+        [pageIndex]="pageIndex" aria-label="Select page">
+    </mat-paginator>
+</div>

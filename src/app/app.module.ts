@@ -20,11 +20,13 @@ import { MatPaginatorModule} from '@angular/material/paginator';
 import { JsonPipe } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
+import { ControllersComponent } from './controllers/controllers.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent
+    HeaderComponent,
+    ControllersComponent
   ],
   imports: [
     BrowserModule,
