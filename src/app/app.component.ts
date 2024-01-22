@@ -1,10 +1,53 @@
 import { Component } from '@angular/core';
-
+import {PageEvent} from '@angular/material/paginator';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./_appComponent.scss']
 })
-export class AppComponent {
-  title = 'pageCountries';
+export class AppComponent  {
+  selectedValue?: string;
+  invertebrates?: string = '';
+  
+
+  length = 13;
+  pageSize = 13;
+  pageIndex = 0;
+  pageSizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+
+  hidePageSize = false;
+  showPageSizeOptions = true;
+  showFirstLastButtons = true;
+  disabled = false;
+
+  pageEvent?: PageEvent;
+
+  sortBy:any[] = [
+    {value: 'name', viewValue: 'Name'},
+    {value: 'population', viewValue: 'Population'},
+    {value: 'area', viewValue: 'Area'},
+  ];
+
+  regions: any[] = [
+    { value: 'africa', viewValue: 'Africa' },
+    { value: 'america', viewValue: 'America' },
+    { value: 'asia', viewValue: 'Asia' },
+    { value: 'europa', viewValue: 'Europa' },
+    { value: 'oceania', viewValue: 'Oceania' },
+  ]
+  
+
+  
+  handlePageEvent(e: PageEvent) {
+    this.pageEvent = e;
+    this.length = e.length;
+    this.pageSize = e.pageSize;
+    this.pageIndex = e.pageIndex;
+  }
+
+  setPageSizeOptions(setPageSizeOptionsInput: string) {
+    if (setPageSizeOptionsInput) {
+      this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+    }
+  }
 }
