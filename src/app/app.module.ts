@@ -22,6 +22,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
 import { ControllersComponent } from './controllers/controllers.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,7 +47,7 @@ import { ControllersComponent } from './controllers/controllers.component';
     MatCheckboxModule,
     MatPaginatorModule,
     JsonPipe,
-    MatSlideToggleModule
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

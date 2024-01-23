@@ -1,24 +1,23 @@
 
 <div class="container-controllers">
 
-    <mat-form-field  class="custom-light-theme"appearance="outline">
+    <mat-form-field class="container-search " appearance="outline">
         <mat-label>Search</mat-label>
         <input class="search" matInput placeholder="Country">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-
-    <mat-form-field>
+    <mat-form-field  appearance="outline" >
         <mat-icon matSuffix>sort</mat-icon>
         <mat-label>sortBy</mat-label>
-        <mat-select [(ngModel)]="selectedValue" name="food">
+        <mat-select [(ngModel)]="selectedValue">
             <ul *ngFor="let sort of sortBy">
                 <mat-option [value]="sort.value">{{sort.viewValue}}</mat-option>
             </ul>
         </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field  appearance="outline">
         <mat-icon matSuffix>filter_alt</mat-icon>
         <mat-label>Filter By</mat-label>
         <mat-select [(ngModel)]="selectedValue">

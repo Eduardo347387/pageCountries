@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import {PageEvent} from '@angular/material/paginator';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+
 @Component({
   selector: 'app-controllers',
   templateUrl: './controllers.component.html',
@@ -34,6 +35,7 @@ export class ControllersComponent {
 
 	pageEvent?: PageEvent;
 
+	
 	handlePageEvent(e: PageEvent) {
 		this.pageEvent = e;
 		this.length = e.length;

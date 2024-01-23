@@ -2,24 +2,16 @@
     padding: 2rem 1.5rem;
     display: flex;
     flex-direction: column;
-
-    /* @import '~@angular/material/theming';
-    
-    $custom-light-theme: mat.define-light-theme(
- 
-        (color: (primary: 'blue', // Cambia 'blue' al color que desees para el modo claro
-            accent: 'pink', // Cambia 'pink' al color que desees para el modo claro
-            warn: 'red', // Cambia 'red' al color que desees para el modo claro
-        ),
-        )
-    );
-
-    @include angular-material-theme($custom-light-theme); */
-    // ::ng-deep .container-search {
-    //     mat-label,mat-icon{
-    //         color: var(--White);
-    //     }
-       
-    // }
-
+    mat-form-field{
+        mat-label, mat-icon{   
+            color: var(--White);
+        }
+        input,mat-select{
+            
+            color: var(--White);
+            &::placeholder{
+                color: var(--White);
+            }
+        }
+    }
 }
