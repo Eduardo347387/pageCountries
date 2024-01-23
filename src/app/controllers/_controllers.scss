@@ -3,6 +3,10 @@
     display: flex;
     flex-direction: column;
     mat-form-field{
+       background-color: var(--Dark_Blue); 
+       height: 5.5rem;
+       border-radius: .5rem;
+       margin-bottom: 2rem;
         mat-label, mat-icon{   
             color: var(--White);
         }

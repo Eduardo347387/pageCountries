@@ -21,13 +21,16 @@ import { JsonPipe } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
 import { ControllersComponent } from './controllers/controllers.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ListCountrysComponent } from './list-countrys/list-countrys.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    ControllersComponent
+    ControllersComponent,
+    ListCountrysComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +51,7 @@ import { ControllersComponent } from './controllers/controllers.component';
     MatPaginatorModule,
     JsonPipe,
     MatSlideToggleModule,
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

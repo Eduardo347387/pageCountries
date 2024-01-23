@@ -24,7 +24,7 @@ export class ControllersComponent {
 	]
 
 	length = 13;
-	pageSize = 13;
+	pageSize = 1;
 	pageIndex = 0;
 	pageSizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
 
