@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Icountrys, Name } from './models/countrys.model';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Icountrys, Name, valuePaginate } from './models/countrys.model';
 import { ApiService } from './apiService/api.service';
 
 @Component({
@@ -7,8 +7,8 @@ import { ApiService } from './apiService/api.service';
   templateUrl: './app.component.html',
   styleUrls: ['./_appComponent.scss']
 })
-export class AppComponent  {
-  
+export class AppComponent implements OnChanges, OnInit{
+  valuePaginate?:valuePaginate
   listCountrys: Icountrys[] = []
   sortName: Icountrys[] = []
   sortPopulation: Icountrys[] = []
@@ -16,6 +16,32 @@ export class AppComponent  {
 
 
   constructor(private _apiCountrys: ApiService) { }
+  countryList: Icountrys[] = [];
+
+  ngOnInit(): void {
+      console.log(this.valuePaginate)
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.valuePaginate)
+  }
+  
+  onCountryListChanged(newCountryList: Icountrys[]): void {
+    this.countryList = newCountryList;
+    // Opcional: this.sharedService.updateCountryList(newCountryList);
+  }
+
+  onValuePaginate(valuePage: valuePaginate) {
+    this.valuePaginate = valuePage
+  }
+
+
+
+
+
+
+
+
 
 //   ngOnInit(): void {
 //     //trae todos los paises

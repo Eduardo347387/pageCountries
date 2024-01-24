@@ -1,10 +1,11 @@
 <main class="container">
     <app-header/>
+   
     <section class="body">
-        <app-controllers/>
-        <app-list-countrys/>
+        <app-controllers [countrysList]="countryList" (valuePaginateChanged)="onValuePaginate($event)"/>
+        <app-list-countrys (countrylistChanged)="onCountryListChanged($event)" [valuesPaginate]="valuePaginate"/>
     </section>
-
+ 
     <router-outlet></router-outlet>
 </main>
 

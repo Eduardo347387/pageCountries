@@ -1,3 +1,8 @@
+export interface valuePaginate{
+    page_Size: number,
+    page_Number: number
+}
+
 export interface Icountrys {
     name:         Name;
     tld?:         string[];
@@ -300,3 +305,5 @@ export enum Status {
     OfficiallyAssigned = "officially-assigned",
     UserAssigned = "user-assigned",
 }
+
+

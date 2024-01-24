@@ -39,8 +39,9 @@
 
 
 <mat-paginator 
-        #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+        #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="countrysList.length"
         [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
         [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
         [pageIndex]="pageIndex" aria-label="Select page">
 </mat-paginator>
+
