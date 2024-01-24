@@ -8,8 +8,7 @@ import { SharedService } from '../shared.service';
   templateUrl: './controllers.component.html',
   styleUrls: ['./_controllers.scss']
 })
-export class ControllersComponent{
-	@Input() countrysList: Icountrys[] = []
+export class ControllersComponent implements OnInit{
 	
 	selectedValue?: string;
 
@@ -27,7 +26,7 @@ export class ControllersComponent{
 		{ value: 'oceania', viewValue: 'Oceania' },
 	]
 
-	length = 249;
+	length:number = 0;
 	pageSize = 20;
 	pageIndex = 0;
 	pageSizeOptions = [5,10,15,20,25];
@@ -40,8 +39,15 @@ export class ControllersComponent{
 
 	pageEvent?: PageEvent;
 
-	constructor(private _share:SharedService){}
+	constructor(private _share: SharedService) {
+	}
 	
+	ngOnInit(): void {
+		this._share.valuesLength$.subscribe((valueLength) => {
+			this.length = valueLength!
+		})
+		
+	}
 	
 	// Manejar evento de pagina
 	handlePageEvent(e: PageEvent) {
@@ -49,7 +55,7 @@ export class ControllersComponent{
 		this.length = e.length;
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex;
-		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex+1 })
+		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 	}
 
 

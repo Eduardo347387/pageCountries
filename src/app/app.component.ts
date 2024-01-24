@@ -19,11 +19,6 @@ export class AppComponent {
   countryList: Icountrys[] = [];
 
  
-  
-  onCountryListChanged(newCountryList: Icountrys[]): void {
-    this.countryList = newCountryList;
-    // Opcional: this.sharedService.updateCountryList(newCountryList);
-  }
 
 
 
