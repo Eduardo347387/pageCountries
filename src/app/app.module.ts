@@ -23,6 +23,7 @@ import { HeaderComponent } from './header/header.component';
 import { ControllersComponent } from './controllers/controllers.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListCountrysComponent } from './list-countrys/list-countrys.component';
+import { AbbreviateNumberPipe } from './abbreviate-number.pipe';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ListCountrysComponent } from './list-countrys/list-countrys.component';
     AppComponent,
     HeaderComponent,
     ControllersComponent,
-    ListCountrysComponent
+    ListCountrysComponent,
+    AbbreviateNumberPipe
   ],
   imports: [
     BrowserModule,

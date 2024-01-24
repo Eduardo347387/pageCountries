@@ -1,12 +1,13 @@
 <section class="container-list-countrys">
-  
         <div class="card-country" *ngFor="let country of listCountrys">
-            <img class="img-country" src="{{country.flags.png}}" alt={{country.flags.alt}}>
+            <div class="img-box">
+                <img class="img-country" src="{{country.flags.png}}" alt={{country.flags.alt}}>
+            </div>
             <div class="content">
                 <p class="name-country">{{country.name.common}}</p>
                 <p class="info-country">Capilal: <span>{{getNameCapital(country)}}</span></p>
-                <p class="info-country">Region: <span>Pendiente</span></p>
-                <p class="info-country">Population: <span>Pendiente</span></p>
+                <p class="info-country">Region: <span>{{country.region}}</span></p>
+                <p class="info-country">Population: <span>{{country.population | abbreviateNumber}}</span></p>
             </div>
         </div>
 

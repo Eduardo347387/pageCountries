@@ -8,15 +8,13 @@ import { Icountrys } from '../models/countrys.model';
   styleUrls: ['./_listCountrys.scss']
 })
 export class ListCountrysComponent implements OnInit {
-    listCountrys: Icountrys[] = []
+  listCountrys: Icountrys[] = []
+  
     constructor(private _apiCountry: ApiService){}  
 
     ngOnInit(): void {
       this._apiCountry.getallCountrys().subscribe(country => {
         this.listCountrys = country
-        /* for (const country of this.listCountrys) {
-              // console.log(this.getNameCapital(country))
-        } */
       })
     }
   
@@ -28,4 +26,5 @@ export class ListCountrysComponent implements OnInit {
         return 'Not fount'
       }
   }
+
 }
