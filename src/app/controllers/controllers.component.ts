@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ThemePalette } from '@angular/material/core';
 import { PageEvent } from '@angular/material/paginator';
 
 @Component({
@@ -24,14 +25,15 @@ export class ControllersComponent {
 	]
 
 	length = 13;
-	pageSize = 1;
+	pageSize = 20;
 	pageIndex = 0;
-	pageSizeOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
+	pageSizeOptions = [5,10,15,20,25];
 
 	hidePageSize = false;
 	showPageSizeOptions = true;
 	showFirstLastButtons = true;
 	disabled = false;
+	
 
 	pageEvent?: PageEvent;
 

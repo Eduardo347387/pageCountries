@@ -19,3 +19,18 @@
         }
     }
 }
+
+
+.demo-paginator {
+    background-color: hsl(209, 23%, 22%);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding-bottom: 1.5rem;
+    color: var(--Very_Light_Gray);
+}
+
+
+@media(min-width:530px){
+    .demo-paginator {
+        padding-bottom: 0;
+    }
+}
