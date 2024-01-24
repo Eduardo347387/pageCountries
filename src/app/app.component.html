@@ -2,8 +2,8 @@
     <app-header/>
    
     <section class="body">
-        <app-controllers [countrysList]="countryList" (valuePaginateChanged)="onValuePaginate($event)"/>
-        <app-list-countrys (countrylistChanged)="onCountryListChanged($event)" [valuesPaginate]="valuePaginate"/>
+        <app-controllers [countrysList]="countryList"/>
+        <app-list-countrys (countrylistChanged)="onCountryListChanged($event)"/>
     </section>
  
     <router-outlet></router-outlet>

@@ -8,28 +8,30 @@ import { SharedService } from '../shared.service';
   templateUrl: './list-countrys.component.html',
   styleUrls: ['./_listCountrys.scss']
 })
-export class ListCountrysComponent implements OnInit,OnChanges{
+export class ListCountrysComponent implements OnInit{
   page_size: number = 20;
-  page_number: number = 0
+  page_number: number = 1;
 
   @Output() countrylistChanged = new EventEmitter<Icountrys[]>()
-  @Input() valuesPaginate?:valuePaginate
   listCountrys: Icountrys[] = []
     
 
-    constructor(private _apiCountry: ApiService){}  
+    constructor(private _apiCountry: ApiService, private _share:SharedService){}  
 
     ngOnInit(): void {
       this._apiCountry.getallCountrys().subscribe(country => {
         this.listCountrys = country
-         this.sendDataToControllers()
+        this.sendDataToControllers()
       })
+
+      this._share.valuesPaginate$.subscribe((valuesPaginate) => {
+         this.page_number = valuesPaginate?.page_Number!
+        this.page_size = valuesPaginate?.page_Size!
+      })
+
     }
   
-    ngOnChanges(changes: SimpleChanges): void {
-      this.page_number = this.valuesPaginate?.page_Number!
-      this.page_size = this.valuesPaginate?.page_Size!
-    }
+
   
     sendDataToControllers(): void {
       this.countrylistChanged.emit(this.listCountrys);

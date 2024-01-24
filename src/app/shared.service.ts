@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Icountrys } from './models/countrys.model';
+import { Icountrys, valuePaginate } from './models/countrys.model';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +9,15 @@ export class SharedService {
 
   constructor() { }
 
-  private countryListSuject = new BehaviorSubject<Icountrys[]>([]);
-  countryList$ = this.countryListSuject.asObservable();
+  private valuesPaginateSubject = new BehaviorSubject<valuePaginate | undefined>(undefined);
+  valuesPaginate$ = this.valuesPaginateSubject.asObservable();
 
-  getCountryList(countryList: Icountrys[]): void {
-    this.countryListSuject.next(countryList);
+  getValuePaginate(): valuePaginate | undefined {
+    return this.valuesPaginateSubject.getValue();
   }
 
+  setValuePaginate(valuesPaginate: valuePaginate): void {
+    this.valuesPaginateSubject.next(valuesPaginate);
+  }
 
 }

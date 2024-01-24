@@ -1,15 +1,15 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Icountrys, valuePaginate } from '../models/countrys.model';
+import { SharedService } from '../shared.service';
 
 @Component({
   selector: 'app-controllers',
   templateUrl: './controllers.component.html',
   styleUrls: ['./_controllers.scss']
 })
-export class ControllersComponent implements OnInit, OnChanges{
+export class ControllersComponent{
 	@Input() countrysList: Icountrys[] = []
-	@Output() valuePaginateChanged = new EventEmitter<valuePaginate>()
 	
 	selectedValue?: string;
 
@@ -40,13 +40,8 @@ export class ControllersComponent implements OnInit, OnChanges{
 
 	pageEvent?: PageEvent;
 
-	ngOnInit(): void {
-		this.emitirValue()
-	}
-
-	ngOnChanges(changes: SimpleChanges): void {
-
-	}
+	constructor(private _share:SharedService){}
+	
 	
 	// Manejar evento de pagina
 	handlePageEvent(e: PageEvent) {
@@ -54,13 +49,10 @@ export class ControllersComponent implements OnInit, OnChanges{
 		this.length = e.length;
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex;
-		this.emitirValue()
+		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex+1 })
 	}
 
-	emitirValue(): void{
-		const values: valuePaginate = { page_Size: this.pageSize, page_Number: this.pageIndex+1 }
-		this.valuePaginateChanged.emit(values)
-	}
+
 	
 	// establecer opciones de tamaño de página
 	setPageSizeOptions(setPageSizeOptionsInput: string) {
