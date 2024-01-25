@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,12 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
         this.nameCountry = params['nameCountry']
     })
-  }  
+  } 
+  
+  @HostListener('window:popstate', ['$event'])
+    onPopState(event: Event) {
+    this.volver();
+  }
 
   volver() {
     console.log('volver')
