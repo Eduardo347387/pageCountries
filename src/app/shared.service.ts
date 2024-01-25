@@ -10,19 +10,15 @@ export class SharedService {
   constructor() { }
 
   private valuesPaginateSubject = new BehaviorSubject<valuePaginate | undefined>(undefined);
-  valuesPaginate$ = this.valuesPaginateSubject.asObservable();
-
-  private valuesLenghtSubject = new BehaviorSubject<number | undefined>(undefined);
-  valuesLength$ = this.valuesLenghtSubject.asObservable();
+  private valuesLenghtSubject = new BehaviorSubject<number | undefined>(0);
 
   /* ___________________________________________________________________________________________________________ */
   
-  getValuePaginate(): valuePaginate | undefined {
-    return this.valuesPaginateSubject.getValue();
+  getValuePaginate() {
+    return this.valuesPaginateSubject.asObservable();
   }
 
-  setValuePaginate(valuesPaginate: valuePaginate): void
-   {
+  setValuePaginate(valuesPaginate: valuePaginate):void{
     this.valuesPaginateSubject.next(valuesPaginate);
   }
 
@@ -32,8 +28,8 @@ export class SharedService {
     this.valuesLenghtSubject.next(lenght)
   }
 
-  getCountryLenght():number | undefined {
-    return this.valuesLenghtSubject.getValue()
+  getCountryLenght(){
+    return this.valuesLenghtSubject.asObservable()
   }
   
 

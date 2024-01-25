@@ -1,14 +1,17 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Icountrys, valuePaginate } from '../models/countrys.model';
 import { SharedService } from '../shared.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-controllers',
   templateUrl: './controllers.component.html',
   styleUrls: ['./_controllers.scss']
 })
-export class ControllersComponent implements OnInit{
+export class ControllersComponent implements OnDestroy{
+
+	dataService$?: Subscription
 	
 	selectedValue?: string;
 
@@ -26,7 +29,7 @@ export class ControllersComponent implements OnInit{
 		{ value: 'oceania', viewValue: 'Oceania' },
 	]
 
-	length:number = 0;
+	length?:number;
 	pageSize = 20;
 	pageIndex = 0;
 	pageSizeOptions = [5,10,15,20,25];
@@ -40,14 +43,17 @@ export class ControllersComponent implements OnInit{
 	pageEvent?: PageEvent;
 
 	constructor(private _share: SharedService) {
+		this.dataService$ = this._share.getCountryLenght().subscribe({
+			next: value => {
+				this.length = value
+			},
+			error: error => {
+				this.length = 0
+				console.log(error)
+			}
+		})
 	}
 	
-	ngOnInit(): void {
-		this._share.valuesLength$.subscribe((valueLength) => {
-			this.length = valueLength!
-		})
-		
-	}
 	
 	// Manejar evento de pagina
 	handlePageEvent(e: PageEvent) {
@@ -65,6 +71,10 @@ export class ControllersComponent implements OnInit{
 		if (setPageSizeOptionsInput) {
 		this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
 		}
+	}
+
+	ngOnDestroy(): void {
+		this.dataService$?.unsubscribe()	
 	}
   
 }
