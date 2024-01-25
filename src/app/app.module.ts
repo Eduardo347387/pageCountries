@@ -25,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ListCountrysComponent } from './list-countrys/list-countrys.component';
 import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
 import { PaginatePipe } from './pipes/paginate.pipe';
+import { DetailsCountryComponent } from './details-country/details-country.component';
 
 
 
@@ -35,7 +36,8 @@ import { PaginatePipe } from './pipes/paginate.pipe';
     ControllersComponent,
     ListCountrysComponent,
     AbbreviateNumberPipe,
-    PaginatePipe
+    PaginatePipe,
+    DetailsCountryComponent
   ],
   imports: [
     BrowserModule,

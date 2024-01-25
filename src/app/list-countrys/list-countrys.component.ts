@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { ApiService } from '../apiService/api.service';
-import { Icountrys, valuePaginate } from '../models/countrys.model';
+import { Icountrys} from '../models/countrys.model';
 import { SharedService } from '../shared.service';
 import { Subscription } from 'rxjs';
 
@@ -10,13 +11,16 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./_listCountrys.scss']
 })
 export class ListCountrysComponent implements OnInit, OnDestroy{
-  dataService$?:Subscription
+
+  dataService$?: Subscription
+  dataServiceCountry$?: Subscription;
   page_size: number = 20;
   page_number: number = 1;
   listCountrys: Icountrys[] = []
-    
 
-  constructor(private _apiCountry: ApiService, private _share: SharedService) {
+  @Output() estadoChanged = new EventEmitter<boolean>()
+
+  constructor(private _apiCountry: ApiService, private _share: SharedService , private router:Router) {
 
     this.dataService$ = this._share.getValuePaginate().subscribe({
       next: value => {
@@ -29,12 +33,20 @@ export class ListCountrysComponent implements OnInit, OnDestroy{
         console.log(error)
       }
     })
+
+    this.dataServiceCountry$ = this._share.getListCountry().subscribe({
+      next: value => {
+        this.listCountrys = value!
+      },
+      error: error => {
+        console.log(error)
+      }
+    })
   }  
 
   ngOnInit(): void {
     this._apiCountry.getallCountrys().subscribe(country => {
-      this.listCountrys = country
-      this._share.setCountryLenght(this.listCountrys.length)
+      this._share.setListCountry(country)
     })
   }
   
@@ -48,8 +60,19 @@ export class ListCountrysComponent implements OnInit, OnDestroy{
         return 'Not fount'
       }
   }
+
+  navegarADetallesDelPais(nameCountry: string) {
+    this._share.setEstado(false);
+    this.router.navigate(['/country', nameCountry]);
+    // Reemplaza '/pais' con la ruta real que desees y pasa cualquier parámetro necesario.
+  }
+
+
+
+  
   ngOnDestroy(): void {
-      this.dataService$?.unsubscribe()
+    this.dataService$?.unsubscribe()
+    console.log('suscripcion destruidad desde list countrys')
   }
 
 }

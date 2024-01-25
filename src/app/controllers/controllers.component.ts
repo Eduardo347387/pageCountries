@@ -29,7 +29,7 @@ export class ControllersComponent implements OnDestroy{
 		{ value: 'oceania', viewValue: 'Oceania' },
 	]
 
-	length?:number;
+	length:number = 0;
 	pageSize = 20;
 	pageIndex = 0;
 	pageSizeOptions = [5,10,15,20,25];
@@ -43,9 +43,11 @@ export class ControllersComponent implements OnDestroy{
 	pageEvent?: PageEvent;
 
 	constructor(private _share: SharedService) {
-		this.dataService$ = this._share.getCountryLenght().subscribe({
+		this.dataService$ = this._share.getListCountry().subscribe({
 			next: value => {
-				this.length = value
+				if (value !== undefined) {
+					this.length = value?.length
+				}
 			},
 			error: error => {
 				this.length = 0
@@ -74,7 +76,8 @@ export class ControllersComponent implements OnDestroy{
 	}
 
 	ngOnDestroy(): void {
-		this.dataService$?.unsubscribe()	
+		this.dataService$?.unsubscribe()
+		console.log('suscripcion detruida desde controller')
 	}
   
 }
