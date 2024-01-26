@@ -35,6 +35,8 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
     this.volver();
   }
 
+
+
   volver() {
     console.log('volver')
     this._share.setEstado(true)
