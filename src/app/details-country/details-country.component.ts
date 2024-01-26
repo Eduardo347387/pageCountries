@@ -27,6 +27,7 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
         this.nameCountry = params['nameCountry']
     })
+    console.log(this.nameCountry)
   } 
   
   @HostListener('window:popstate', ['$event'])
