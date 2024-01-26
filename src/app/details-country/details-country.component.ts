@@ -35,6 +35,12 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
     this.volver();
   }
 
+   @HostListener('window:beforeunload', ['$event'])
+   beforeUnloadHandler(event: Event) {
+    console.log('Evento de recarga del navegador detectado');
+     this.router.navigate([''])
+  }
+
 
 
   volver() {
