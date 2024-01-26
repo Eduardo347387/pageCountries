@@ -27,20 +27,12 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
         this.nameCountry = params['nameCountry']
     })
-    console.log(this.nameCountry)
   } 
   
   @HostListener('window:popstate', ['$event'])
     onPopState(event: Event) {
     this.volver();
   }
-
-   @HostListener('window:beforeunload', ['$event'])
-   beforeUnloadHandler(event: Event) {
-    console.log('Evento de recarga del navegador detectado');
-     this.router.navigate([''])
-  }
-
 
 
   volver() {
