@@ -15,7 +15,6 @@ import { ApiService } from '../apiService/api.service';
 })
 
 export class ControllersComponent implements OnDestroy, OnInit{
-	@ViewChild(MatPaginator) paginator: MatPaginator | undefined;
 	
 	dataServiceGetList$?: Subscription
 	dataServiceSearchCountry$?: Subscription
@@ -71,16 +70,12 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	}
 
 	ngOnInit(): void {
+		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
-		
 		this.selectSort.valueChanges.subscribe((value => {
 			if (value === 'name') {
 				this.listCountrys = this.listCountrys.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1)
 				this._share.setListCountry(this.listCountrys);
-				this.paginator?.firstPage()
-				/* this.pageSize = 15;
-				this.pageIndex = 0;
-				this._share.setValuePaginate({page_Size: this.pageSize, page_Number: this.pageIndex + 1 }) */
 			}
 		}))
 

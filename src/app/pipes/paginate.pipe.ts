@@ -3,8 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Icountrys } from '../models/countrys.model';
 
 @Pipe({
-  name: 'paginate',
-  pure: true
+  name: 'paginate'
 })
 export class PaginatePipe implements PipeTransform {
 

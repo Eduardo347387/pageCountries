@@ -1,6 +1,6 @@
 
 <section class="container-list-countrys">
-        <div class="card-country" *ngFor="let country of listCountrys | paginate:page_size:page_number" (click)="navegarADetallesDelPais(country.name.common)">
+        <div class="card-country" *ngFor="let country of listaCountrysPaginada" (click)="navegarADetallesDelPais(country.name.common)">
                 <div class="img-box">
                     <img class="img-country" src="{{country.flags.png}}" alt={{country.flags.alt}}>
                 </div>
