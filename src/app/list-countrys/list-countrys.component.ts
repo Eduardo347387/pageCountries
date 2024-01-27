@@ -109,10 +109,9 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
       next: value => {
         this.page_size = value?.page_Size!;
         this.page_number = value?.page_Number!;
-        this.actualizarListaPaginada(this.listCountrys);
+        this.actualizarListaPaginada();
       },
       error: error => {
-     
         console.log(error);
       }
     });
@@ -128,7 +127,8 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
     this.dataServiceCountry$ = this._share.getListCountry().subscribe({
       next: value => {
         this.listCountrys = value!;
-        this.actualizarListaPaginada(value);
+        this.actualizarListaPaginada();
+        console.log(this.listCountrys)
       },
       error: error => {
         console.log(error);
@@ -150,10 +150,10 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
     this.router.navigate(['/country', nameCountry]);
   }
 
-  actualizarListaPaginada(lista:Icountrys[]) {
+  actualizarListaPaginada() {
     const startIndex = (this.page_number - 1) * this.page_size;
     const endIndex = startIndex + this.page_size;
-    this.listaCountrysPaginada = lista.slice(startIndex, endIndex);
+    this.listaCountrysPaginada = this.listCountrys.slice(startIndex, endIndex);
   }
 
   ngOnDestroy(): void {

@@ -22,12 +22,16 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	suscribeSearchControl$?:Subscription
 	
 	listCountrys:Icountrys[] = []
-	listSortCountrys:Icountrys[] = []
+	listSortCountrys: Icountrys[] = []
+	
+	valueSort:string = 'all'
+	valueSearch: string = ''
 	
 	sortBy:any[] = [
 		{value: 'name', viewValue: 'Name'},
 		{value: 'population', viewValue: 'Population'},
-		{value: 'area', viewValue: 'Area'},
+		{ value: 'area', viewValue: 'Area' },
+		{value: 'all', viewValue: 'All Countrys'},
 	];
 
 	regions: any[] = [
@@ -73,9 +77,15 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
 		this.selectSort.valueChanges.subscribe((value => {
+			this.valueSort = value!
 			if (value === 'name') {
 				this.listCountrys = this.listCountrys.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1)
 				this._share.setListCountry(this.listCountrys);
+			}
+			if (value === 'all') {
+				this._apiService.searchCountry(this.valueSearch).subscribe(data => {
+					this._share.setListCountry(data);
+				})
 			}
 		}))
 
@@ -83,22 +93,36 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			distinctUntilChanged() // Solo emite si el valor realmente ha cambiado
 			)
 			.subscribe(query => {
+				this.valueSearch =  query!
 				// Realice la lógica de búsqueda aquí
 				if (query !== null && query?.length !== 0) {
-					this.dataServiceSearchCountry$ = this._apiService.searchCountry(query).subscribe(data => {
-						this._share.setListCountry(data);
+
+					this.dataServiceSearchCountry$ = this._apiService.searchCountry(this.valueSearch).subscribe(data => {
+						if (this.valueSort === 'all') {
+							this._share.setListCountry(data);
+						}
+						if (this.valueSort === 'name') {
+							this._share.setListCountry(data.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1));
+						}
+						
 					})
 				}
 
 				if (query?.length === 0) {
 					this.allListCountrys()
+					
 				}
 			});
 	}
 
 	allListCountrys() {
 		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe(data => {
-			this._share.setListCountry(data)
+			if (this.valueSort === 'all') {
+				this._share.setListCountry(data);
+			}
+			if (this.valueSort === 'name') {
+					this._share.setListCountry(data.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1));
+			}
 		})	
 	}
 	
