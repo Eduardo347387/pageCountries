@@ -1,12 +1,17 @@
+
 import { Pipe, PipeTransform } from '@angular/core';
 import { Icountrys } from '../models/countrys.model';
 
 @Pipe({
-  name: 'paginate'
+  name: 'paginate',
+  pure: true
 })
 export class PaginatePipe implements PipeTransform {
 
-  transform(array:Icountrys[],page_size:number|string,page_number:number):any[] {
+  
+
+  transform(array: Icountrys[], page_size: number | string, page_number: number): any[] {
+    
     if (!array.length) return []
     if (page_size === 'all') {
       return array;
@@ -21,3 +26,4 @@ export class PaginatePipe implements PipeTransform {
   }
 
 }
+

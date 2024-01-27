@@ -27,7 +27,7 @@ import { AbbreviateNumberPipe } from './pipes/abbreviate-number.pipe';
 import { PaginatePipe } from './pipes/paginate.pipe';
 import { DetailsCountryComponent } from './details-country/details-country.component';
 
-
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -59,6 +59,9 @@ import { DetailsCountryComponent } from './details-country/details-country.compo
     JsonPipe,
     MatSlideToggleModule,
     HttpClientModule,
+
+    ReactiveFormsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

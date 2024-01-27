@@ -2,16 +2,15 @@
 <div class="container-controllers">
 
     <mat-form-field class="container-search " appearance="outline">
-
         <mat-label>Search</mat-label>
-        <input class="search" matInput placeholder="Country">
+        <input class="search" matInput [formControl]="searchControl" placeholder="Country">
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
     <mat-form-field  appearance="outline" >
         <mat-icon matSuffix>sort</mat-icon>
         <mat-label>sortBy</mat-label>
-        <mat-select [(ngModel)]="selectedValue">
+        <mat-select [formControl]="selectSort">
             <ul *ngFor="let sort of sortBy">
                 <mat-option [value]="sort.value">{{sort.viewValue}}</mat-option>
             </ul>
@@ -21,7 +20,7 @@
     <mat-form-field  appearance="outline">
         <mat-icon matSuffix>filter_alt</mat-icon>
         <mat-label>Filter By</mat-label>
-        <mat-select [(ngModel)]="selectedValue">
+        <mat-select>
             <mat-option>
                 <button mat-button [matMenuTriggerFor]="regiones">Regiones</button>
                 <mat-menu #regiones="matMenu">
@@ -30,8 +29,7 @@
                     </ul>
                 </mat-menu>
                 <mat-checkbox>UN Member</mat-checkbox>
-            </mat-option>
-        
+            </mat-option>  
         </mat-select>
     </mat-form-field>
  

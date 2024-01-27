@@ -26,6 +26,8 @@ export class ListCountrysComponent implements OnInit, OnDestroy{
       next: value => {
         this.page_size = value?.page_Size!
         this.page_number = value?.page_Number!
+
+        
       },
       error: error => {
         this.page_size = 0
