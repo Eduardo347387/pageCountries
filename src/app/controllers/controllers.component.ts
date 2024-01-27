@@ -78,11 +78,10 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 		this.selectSort.valueChanges.subscribe((value => {
 			this.valueSort = value!
-			if (value === 'name') {
-				this.listCountrys = this.listCountrys.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1)
-				this._share.setListCountry(this.listCountrys);
+			if (this.valueSort === 'name') {
+				this._share.setListCountry(this.SortNameListCountry(this.listCountrys));
 			}
-			if (value === 'all') {
+			if (this.valueSort === 'all') {
 				this._apiService.searchCountry(this.valueSearch).subscribe(data => {
 					this._share.setListCountry(data);
 				})
@@ -98,12 +97,13 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				if (query !== null && query?.length !== 0) {
 
 					this.dataServiceSearchCountry$ = this._apiService.searchCountry(this.valueSearch).subscribe(data => {
-						if (this.valueSort === 'all') {
+						
+						/* if (this.valueSort === 'all') {
 							this._share.setListCountry(data);
 						}
 						if (this.valueSort === 'name') {
-							this._share.setListCountry(data.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1));
-						}
+							this._share.setListCountry(this.SortNameListCountry(data));
+						} */
 						
 					})
 				}
@@ -124,6 +124,16 @@ export class ControllersComponent implements OnDestroy, OnInit{
 					this._share.setListCountry(data.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1));
 			}
 		})	
+	}
+
+	SortNameListCountry(listaCountrys:Icountrys[]):Icountrys[] {
+		return listaCountrys.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1)
+	}
+
+	searchCountry(country:string){
+		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(data => {
+			this._share.setListCountry(data);				
+		})
 	}
 	
 	
