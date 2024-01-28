@@ -13,7 +13,7 @@
         <mat-select [formControl]="selectSort">
             <mat-option>None</mat-option>
             <ul *ngFor="let sort of sortBy">
-                <mat-option [value]="sort.value">{{sort.viewValue}} {{valueSearch}}</mat-option>
+                <mat-option [value]="sort.value">{{sort.viewValue}}</mat-option>
             </ul>
         </mat-select>
     </mat-form-field>
