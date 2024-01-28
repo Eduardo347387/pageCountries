@@ -15,17 +15,19 @@ import { ApiService } from '../apiService/api.service';
 })
 
 export class ControllersComponent implements OnDestroy, OnInit{
+	@ViewChild('paginator') paginator?: MatPaginator;
 	
 	dataServiceGetList$?: Subscription
 	dataServiceSearchCountry$?: Subscription
 	dataServiceAllCountry$?: Subscription
 	suscribeSearchControl$?:Subscription
+	suscribeSelectSortControl$?: Subscription
 	
 	listCountrys:Icountrys[] = []
 	listSortCountrys: Icountrys[] = []
 	
 	valueSort:string = 'all'
-	valueSearch: string = ''
+	valueSearch: string = '' 
 	
 	sortBy:any[] = [
 		{value: 'name', viewValue: 'Name'},
@@ -76,16 +78,21 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	ngOnInit(): void {
 		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
-		this.selectSort.valueChanges.subscribe((value => {
+		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe((value => {
 			this.valueSort = value!
 			if (this.valueSort === 'name') {
 				this._share.setListCountry(this.SortNameListCountry(this.listCountrys));
+			
+			}if (this.valueSort === 'population') {
+				this._share.setListCountry(this.SortPopulationListaCountry(this.listCountrys))
+
+			}if (this.valueSort === 'area') {
+				this._share.setListCountry(this.SortAreaListCountry(this.listCountrys))
 			}
 			if (this.valueSort === 'all') {
-				this._apiService.searchCountry(this.valueSearch).subscribe(data => {
-					this._share.setListCountry(data);
-				})
+				this.logicSearch()
 			}
+			
 		}))
 
 		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500), // Retrasa las actualizaciones durante 500 ms
@@ -93,47 +100,65 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			)
 			.subscribe(query => {
 				this.valueSearch =  query!
+				if (this.pageIndex > 0) {
+					this.paginator?.firstPage()	
+				}
+		
 				// Realice la lógica de búsqueda aquí
-				if (query !== null && query?.length !== 0) {
-
-					this.dataServiceSearchCountry$ = this._apiService.searchCountry(this.valueSearch).subscribe(data => {
-						
-						/* if (this.valueSort === 'all') {
-							this._share.setListCountry(data);
-						}
-						if (this.valueSort === 'name') {
-							this._share.setListCountry(this.SortNameListCountry(data));
-						} */
-						
-					})
-				}
-
-				if (query?.length === 0) {
-					this.allListCountrys()
-					
-				}
+				this.logicSearch()
 			});
 	}
 
 	allListCountrys() {
 		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe(data => {
-			if (this.valueSort === 'all') {
-				this._share.setListCountry(data);
-			}
-			if (this.valueSort === 'name') {
-					this._share.setListCountry(data.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1));
-			}
-		})	
+			this.sortListCountrys(data)
+		})
 	}
 
 	SortNameListCountry(listaCountrys:Icountrys[]):Icountrys[] {
 		return listaCountrys.sort((a, b) => (a.name.common > b.name.common) ? 1 : -1)
 	}
 
-	searchCountry(country:string){
+	SortPopulationListaCountry(listCountry:Icountrys[]):Icountrys[] {
+		return listCountry.sort((a, b) => (a.population < b.population) ? 1 : -1)
+	}
+
+	SortAreaListCountry(listCountry:Icountrys[]):Icountrys[] {
+		return listCountry.sort((a, b) => (a.area < b.area) ? 1 : -1)
+	}
+
+	searchCountry(country: string){
 		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(data => {
-			this._share.setListCountry(data);				
+			this.sortListCountrys(data)
 		})
+	}
+
+	sortListCountrys(listCountrys: Icountrys[]) {	
+		if (this.valueSort === 'name'){
+			this._share.setListCountry(this.SortNameListCountry(listCountrys))
+			return
+		}
+		if (this.valueSort === 'population') {
+			this._share.setListCountry(this.SortPopulationListaCountry(listCountrys))
+			return
+		}
+		if (this.valueSort === 'area') {
+			this._share.setListCountry(this.SortAreaListCountry(listCountrys))
+			return
+		}
+		if(this.valueSort === 'all') {
+			this._share.setListCountry(listCountrys)
+			return
+		}
+	}
+
+
+	logicSearch() {
+		if (!this.valueSearch) {
+				this.allListCountrys()
+		} else {
+			this.searchCountry(this.valueSearch)
+		}
 	}
 	
 	
@@ -160,6 +185,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		this.dataServiceSearchCountry$?.unsubscribe()
 		this.dataServiceAllCountry$?.unsubscribe()
 		this.suscribeSearchControl$?.unsubscribe()
+		this.suscribeSelectSortControl$?.unsubscribe()
 		console.log('suscripcion detruida desde controller')
 	}
   
