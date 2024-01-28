@@ -21,16 +21,20 @@
     <mat-form-field  appearance="outline">
         <mat-icon matSuffix>filter_alt</mat-icon>
         <mat-label>Filter By</mat-label>
-        <mat-select>
-            <mat-option>
-                <button mat-button [matMenuTriggerFor]="regiones">Regiones</button>
-                <mat-menu #regiones="matMenu">
-                    <ul *ngFor="let region of regions">
-                        <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
-                    </ul>
-                </mat-menu>
-                <mat-checkbox>UN Member</mat-checkbox>
-            </mat-option>  
+        <mat-select>  
+            <button mat-button [matMenuTriggerFor]="regiones">Regiones</button>
+            <mat-menu #regiones="matMenu">
+                <mat-option>None</mat-option>
+                <ul *ngFor="let region of regions">
+                    <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
+                </ul>
+            </mat-menu>
+            <mat-checkbox name="check" (change)="onCheckboxChange('name')" [disabled]="isCheckboxDisabled('name')">UN
+                Member</mat-checkbox>
+            <mat-checkbox name="check" (change)="onCheckboxChange('population')" [disabled]="isCheckboxDisabled('population')">UN
+                Member 1</mat-checkbox>
+            <mat-checkbox name="check" (change)="onCheckboxChange('area')" [disabled]="isCheckboxDisabled('area')">UN
+                Member 2</mat-checkbox>
         </mat-select>
     </mat-form-field>
  

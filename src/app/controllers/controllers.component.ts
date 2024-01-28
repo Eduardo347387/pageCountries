@@ -61,6 +61,31 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	searchControl = new FormControl('');
 	selectSort = new FormControl('');
 
+
+
+	selectedCheckbox: string | null = null;
+
+	onCheckboxChange(value: string): void {
+		if (this.selectedCheckbox === value) {
+			// Si el checkbox seleccionado se hace clic nuevamente, desmárcalo
+		console.log('Obtener Todos lo paises')
+		this.selectedCheckbox = null;
+		} else {
+			console.log(value)
+			
+		// Si se selecciona un nuevo checkbox, desmarcar el anterior y marcar el nuevo
+		this.selectedCheckbox = value;
+		}
+
+	}
+
+	isCheckboxDisabled(value: string): boolean {
+		return this.selectedCheckbox !== null && this.selectedCheckbox !== value;
+	}
+
+
+
+
 	constructor(private _share: SharedService, private _apiService:ApiService) {
 		this.dataServiceGetList$ = this._share.getListCountry().subscribe({
 			next: value => {
