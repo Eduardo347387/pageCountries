@@ -62,27 +62,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	searchControl = new FormControl('');
 	selectSort = new FormControl('');
 
-	selectedCheckbox: string | null = null;
-	
-	selectedSort: string | null = null;
-
-	onCheckboxChange(sort: string): void {
-		if (this.selectedSort === sort) {
-		// Si el checkbox seleccionado se hace clic nuevamente, desmarcarlo
-		this.selectedSort = null;
-		this.selectSort.setValue('');
-		} else {
-		// Si se selecciona un nuevo checkbox, desmarcar el anterior y marcar el nuevo
-		this.selectedSort = sort;
-		this.selectSort.setValue(sort);
-		}
-  	}
-
-	isCheckboxSelected(sort: string): boolean {
-		return this.selectedSort === sort;
-	}
-
-
 	constructor(private _share: SharedService, private _apiService:ApiService) {
 		this.dataServiceGetList$ = this._share.getListCountry().subscribe({
 			next: value => {
