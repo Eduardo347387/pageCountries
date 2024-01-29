@@ -29,6 +29,7 @@ import { DetailsCountryComponent } from './details-country/details-country.compo
 
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { MatRadioModule } from '@angular/material/radio'; 
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
 
     ReactiveFormsModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

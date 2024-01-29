@@ -7,16 +7,33 @@
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    <mat-form-field  appearance="outline" >
+    <!-- <mat-form-field  appearance="outline" >
         <mat-icon matSuffix>sort</mat-icon>
         <mat-label>sortBy</mat-label>
-        <mat-select [formControl]="selectSort">
-            <mat-option>None</mat-option>
+        <mat-select [formControl]="selectSort" multiple>
             <ul *ngFor="let sort of sortBy">
-                <mat-option [value]="sort.value">{{sort.viewValue}}</mat-option>
+                <mat-option><mat-checkbox (change)="onCheckboxChange(sort.value)" [disabled]="isCheckboxDisabled(sort.value)">{{sort.viewValue}}</mat-checkbox></mat-option>
             </ul>
         </mat-select>
+    </mat-form-field> -->
+
+
+    <mat-form-field appearance="outline">
+        <mat-label>Toppings</mat-label>
+        <mat-select [formControl]="selectSort" >
+            <mat-select-trigger>{{selectSort.value}}</mat-select-trigger>
+            <div *ngFor="let sort of sortCountry">
+                <!-- <mat-option [value]="sort">{{sort}}</mat-option> -->
+                <mat-option [value]="sort"><mat-radio-button >{{ sort }}</mat-radio-button></mat-option>
+                
+            </div>
+        </mat-select>
     </mat-form-field>
+
+    <!-- <mat-checkbox [value]="sort" name="sortCheckbox" [checked]="isCheckboxSelected(sort)" (change)="onCheckboxChange(sort)">
+        {{ sort }}
+    </mat-checkbox> -->
+
 
     <mat-form-field  appearance="outline">
         <mat-icon matSuffix>filter_alt</mat-icon>
@@ -29,12 +46,7 @@
                     <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
                 </ul>
             </mat-menu>
-            <mat-checkbox name="check" (change)="onCheckboxChange('name')" [disabled]="isCheckboxDisabled('name')">UN
-                Member</mat-checkbox>
-            <mat-checkbox name="check" (change)="onCheckboxChange('population')" [disabled]="isCheckboxDisabled('population')">UN
-                Member 1</mat-checkbox>
-            <mat-checkbox name="check" (change)="onCheckboxChange('area')" [disabled]="isCheckboxDisabled('area')">UN
-                Member 2</mat-checkbox>
+           
         </mat-select>
     </mat-form-field>
  

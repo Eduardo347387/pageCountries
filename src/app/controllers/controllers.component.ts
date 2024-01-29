@@ -32,9 +32,10 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	sortBy:any[] = [
 		{value: 'name', viewValue: 'Name'},
 		{value: 'population', viewValue: 'Population'},
-		{ value: 'area', viewValue: 'Area' },
-		{value: 'all', viewValue: 'All Countrys'},
+		{value: 'area', viewValue: 'Area' }
 	];
+
+	sortCountry:string[] = ['name','popular','area']
 
 	regions: any[] = [
 		{ value: 'africa', viewValue: 'Africa' },
@@ -61,29 +62,25 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	searchControl = new FormControl('');
 	selectSort = new FormControl('');
 
-
-
 	selectedCheckbox: string | null = null;
+	
+	selectedSort: string | null = null;
 
-	onCheckboxChange(value: string): void {
-		if (this.selectedCheckbox === value) {
-			// Si el checkbox seleccionado se hace clic nuevamente, desmárcalo
-		console.log('Obtener Todos lo paises')
-		this.selectedCheckbox = null;
+	onCheckboxChange(sort: string): void {
+		if (this.selectedSort === sort) {
+		// Si el checkbox seleccionado se hace clic nuevamente, desmarcarlo
+		this.selectedSort = null;
+		this.selectSort.setValue('');
 		} else {
-			console.log(value)
-			
 		// Si se selecciona un nuevo checkbox, desmarcar el anterior y marcar el nuevo
-		this.selectedCheckbox = value;
+		this.selectedSort = sort;
+		this.selectSort.setValue(sort);
 		}
+  	}
 
+	isCheckboxSelected(sort: string): boolean {
+		return this.selectedSort === sort;
 	}
-
-	isCheckboxDisabled(value: string): boolean {
-		return this.selectedCheckbox !== null && this.selectedCheckbox !== value;
-	}
-
-
 
 
 	constructor(private _share: SharedService, private _apiService:ApiService) {
