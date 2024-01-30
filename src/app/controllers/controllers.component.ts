@@ -175,8 +175,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	
 
 
-	logicSearch() {
-		
+	logicSearch() {	
 		if (!this.valueSearch && this.valueFilterBy) {
 			console.log(`Obtener todos los paises con ${this.valueFilterBy}`)
 			this.filterByListCountry(this.valueFilterBy)
