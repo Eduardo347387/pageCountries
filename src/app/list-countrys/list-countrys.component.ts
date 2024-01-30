@@ -127,11 +127,7 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
 
     this.dataServiceCountry$ = this._share.getListCountry().subscribe({
       next: value => {
-        this.listCountrys = value!;
-
-        /* this.listCountrys = this.listCountrys.filter(data=> data.region === this.filterValue)
-        console.log(this.listCountrys) */
-        
+        this.listCountrys = value!;   
         this.actualizarListaPaginada();
       },
       error: error => {
@@ -158,6 +154,7 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
     const startIndex = (this.page_number - 1) * this.page_size;
     const endIndex = startIndex + this.page_size;
     this.listaCountrysPaginada = this.listCountrys.slice(startIndex, endIndex);
+   
   }
 
   ngOnDestroy(): void {

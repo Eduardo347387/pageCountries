@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { Icountrys, valuePaginate } from '../models/countrys.model';
+import { Icountrys} from '../models/countrys.model';
 import { SharedService } from '../shared.service';
-import { Subscription, every } from 'rxjs';
+import { Subscription} from 'rxjs';
 
 import { FormControl } from '@angular/forms';
-import { fromEvent, debounceTime, distinctUntilChanged, switchMap } from 'rxjs'
+import { debounceTime, distinctUntilChanged} from 'rxjs'
 import { ApiService } from '../apiService/api.service';
 
 @Component({
@@ -20,8 +20,10 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	dataServiceGetList$?: Subscription
 	dataServiceSearchCountry$?: Subscription
 	dataServiceAllCountry$?: Subscription
+	dataServiceCaregorty$?:Subscription
 	suscribeSearchControl$?:Subscription
 	suscribeSelectSortControl$?: Subscription
+	suscribeFilterControl$?: Subscription
 	
 	listCountrys:Icountrys[] = []
 	
@@ -77,23 +79,21 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	ngOnInit(): void {
 		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
-		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500), // Retrasa las actualizaciones durante 500 ms
-			distinctUntilChanged() // Solo emite si el valor realmente ha cambiado
-			)
-			.subscribe(query => {
-				this.valueSearch =  query!
-				if (this.pageIndex > 0) {
-					this.paginator?.firstPage()	
-				}
-				this.logicSearch()
+		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe(query => {
+			this.valueSearch = query!
+			
+			if (this.pageIndex > 0) {
+				this.paginator?.firstPage()	
+			}
+			this.logicSearch()
 		});
 
 		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
 			this.valueSort = value!
 			this.sortListCountrys(this.listCountrys)
 
-			if (!this.valueSort && this.valueFilterBy) {
-				this.filterByListCountry(this.valueFilterBy)
+			if (!this.valueSort && this.valueFilterBy && this.valueSearch) {
+				this.searchCountry(this.valueSearch)
 			}
 			else if(!this.valueSort) {
 				this.logicSearch()
@@ -101,8 +101,9 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			
 		})
 
-		this.filterBy.valueChanges.subscribe((value => {
+		this.suscribeFilterControl$ =  this.filterBy.valueChanges.subscribe((value => {
 			this.valueFilterBy = value!
+
 			if (!this.valueFilterBy) {
 				this.allListCountrys()
 			} 	
@@ -137,12 +138,9 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	}
 
 	searchCountry(country: string){
-		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(data => {
-			
+		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(data => {	
 			this.sortListCountrys(data)
-			this.logicValueSort(data)
-			
-			
+			this.logicValueSort(data)		
 		})
 	}
 
@@ -162,7 +160,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	}
 
 	filterByListCountry(value:string) {
-		this._apiService.getCountrysForRegion(value).subscribe(data => {
+		this.dataServiceCaregorty$ = this._apiService.getCountrysForRegion(value).subscribe(data => {
 			this.logicValueSort(data)
 			this.sortListCountrys(data)
 			
@@ -177,7 +175,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 	logicSearch() {	
 		if (!this.valueSearch && this.valueFilterBy) {
-			console.log(`Obtener todos los paises con ${this.valueFilterBy}`)
 			this.filterByListCountry(this.valueFilterBy)
 		}else if (!this.valueSearch) {
 			this.allListCountrys()
@@ -189,14 +186,13 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 	logicValueSort(listCountrys: Icountrys[]) {
 		if (this.valueFilterBy && this.valueSearch) {
-			console.log(this.filterListActual(listCountrys,this.valueFilterBy))
 			this._share.setListCountry(this.filterListActual(listCountrys, this.valueFilterBy))
 			return
 		}
 		if (!this.valueSort || !this.valueFilterBy) {
 			this._share.setListCountry(listCountrys)
 			return
-		}	
+		}
 	
 	}
 
@@ -234,7 +230,8 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		this.dataServiceAllCountry$?.unsubscribe()
 		this.suscribeSearchControl$?.unsubscribe()
 		this.suscribeSelectSortControl$?.unsubscribe()
-		console.log('suscripcion detruida desde controller')
+		this.suscribeFilterControl$?.unsubscribe()
+		this.dataServiceCaregorty$?.unsubscribe()
 	}
   
 }
