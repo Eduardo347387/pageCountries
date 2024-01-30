@@ -101,6 +101,7 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
   page_number: number = 1;
   listCountrys: Icountrys[] = [];
   listaCountrysPaginada: Icountrys[] = [];
+  filterValue:string = "Africa"
 
   @Output() estadoChanged = new EventEmitter<boolean>();
 
@@ -127,8 +128,11 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
     this.dataServiceCountry$ = this._share.getListCountry().subscribe({
       next: value => {
         this.listCountrys = value!;
+
+        /* this.listCountrys = this.listCountrys.filter(data=> data.region === this.filterValue)
+        console.log(this.listCountrys) */
+        
         this.actualizarListaPaginada();
-        console.log(this.listCountrys)
       },
       error: error => {
         console.log(error);

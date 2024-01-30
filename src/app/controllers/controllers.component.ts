@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, S
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Icountrys, valuePaginate } from '../models/countrys.model';
 import { SharedService } from '../shared.service';
-import { Subscription } from 'rxjs';
+import { Subscription, every } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { fromEvent, debounceTime, distinctUntilChanged, switchMap } from 'rxjs'
@@ -24,25 +24,24 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	suscribeSelectSortControl$?: Subscription
 	
 	listCountrys:Icountrys[] = []
-	listSortCountrys: Icountrys[] = []
 	
-	valueSort:string = 'all'
+	valueSort?:string 
 	valueSearch: string = '' 
-	
+	valueFilterBy?:string
+	isUnMemberChecked: boolean = false;
+
 	sortBy:any[] = [
 		{value: 'name', viewValue: 'Name'},
 		{value: 'population', viewValue: 'Population'},
 		{value: 'area', viewValue: 'Area' }
 	];
 
-	sortCountry:string[] = ['name','popular','area']
-
 	regions: any[] = [
-		{ value: 'africa', viewValue: 'Africa' },
-		{ value: 'america', viewValue: 'America' },
-		{ value: 'asia', viewValue: 'Asia' },
-		{ value: 'europa', viewValue: 'Europa' },
-		{ value: 'oceania', viewValue: 'Oceania' },
+		{ value: 'Africa', viewValue: 'Africa' },
+		{ value: 'Americas', viewValue: 'America' },
+		{ value: 'Asia', viewValue: 'Asia' },
+		{ value: 'Europe', viewValue: 'Europa' },
+		{ value: 'Oceania', viewValue: 'Oceania' },
 	]
 
 	length:number = 0;
@@ -54,13 +53,12 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	showPageSizeOptions = true;
 	showFirstLastButtons = true;
 	disabled = false;
-	
-
 	pageEvent?: PageEvent;
 
 	
 	searchControl = new FormControl('');
 	selectSort = new FormControl('');
+	filterBy = new FormControl('');
 
 	constructor(private _share: SharedService, private _apiService:ApiService) {
 		this.dataServiceGetList$ = this._share.getListCountry().subscribe({
@@ -79,23 +77,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	ngOnInit(): void {
 		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
-		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe((value => {
-			this.valueSort = value!
-			if (this.valueSort === 'name') {
-				this._share.setListCountry(this.SortNameListCountry(this.listCountrys));
-			
-			}if (this.valueSort === 'population') {
-				this._share.setListCountry(this.SortPopulationListaCountry(this.listCountrys))
-
-			}if (this.valueSort === 'area') {
-				this._share.setListCountry(this.SortAreaListCountry(this.listCountrys))
-			}
-			if (this.valueSort === 'all') {
-				this.logicSearch()
-			}
-			
-		}))
-
 		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500), // Retrasa las actualizaciones durante 500 ms
 			distinctUntilChanged() // Solo emite si el valor realmente ha cambiado
 			)
@@ -104,15 +85,42 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				if (this.pageIndex > 0) {
 					this.paginator?.firstPage()	
 				}
-		
-				// Realice la lógica de búsqueda aquí
 				this.logicSearch()
-			});
+		});
+
+		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
+			this.valueSort = value!
+			this.sortListCountrys(this.listCountrys)
+
+			if (!this.valueSort && this.valueFilterBy) {
+				this.filterByListCountry(this.valueFilterBy)
+			}
+			else if(!this.valueSort) {
+				this.logicSearch()
+			}
+			
+		})
+
+		this.filterBy.valueChanges.subscribe((value => {
+			this.valueFilterBy = value!
+			if (!this.valueFilterBy) {
+				this.allListCountrys()
+			} 	
+			else {
+				this.filterByListCountry(this.valueFilterBy)
+			}
+			this.logicSearch()
+			
+
+			
+		}))
+
 	}
 
 	allListCountrys() {
 		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe(data => {
 			this.sortListCountrys(data)
+			this.logicValueSort(data)
 		})
 	}
 
@@ -130,7 +138,11 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 	searchCountry(country: string){
 		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(data => {
+			
 			this.sortListCountrys(data)
+			this.logicValueSort(data)
+			
+			
 		})
 	}
 
@@ -147,18 +159,54 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			this._share.setListCountry(this.SortAreaListCountry(listCountrys))
 			return
 		}
-		if(this.valueSort === 'all') {
-			this._share.setListCountry(listCountrys)
-			return
-		}
 	}
+
+	filterByListCountry(value:string) {
+		this._apiService.getCountrysForRegion(value).subscribe(data => {
+			this.logicValueSort(data)
+			this.sortListCountrys(data)
+			
+		})
+	}
+	
+	filterListActual(listCountrys: Icountrys[], value: string): Icountrys[]{
+		return listCountrys = listCountrys.filter(data=> data.region === value)
+	}
+	
 
 
 	logicSearch() {
-		if (!this.valueSearch) {
-				this.allListCountrys()
-		} else {
+		
+		if (!this.valueSearch && this.valueFilterBy) {
+			console.log(`Obtener todos los paises con ${this.valueFilterBy}`)
+			this.filterByListCountry(this.valueFilterBy)
+		}else if (!this.valueSearch) {
+			this.allListCountrys()
+		}
+		else {
 			this.searchCountry(this.valueSearch)
+		}
+	}
+
+	logicValueSort(listCountrys: Icountrys[]) {
+		if (this.valueFilterBy && this.valueSearch) {
+			console.log(this.filterListActual(listCountrys,this.valueFilterBy))
+			this._share.setListCountry(this.filterListActual(listCountrys, this.valueFilterBy))
+			return
+		}
+		if (!this.valueSort || !this.valueFilterBy) {
+			this._share.setListCountry(listCountrys)
+			return
+		}	
+	
+	}
+
+	fnCheckUnMember(){
+		this.isUnMemberChecked = !this.isUnMemberChecked
+		if (this.isUnMemberChecked) {
+			console.log('Marcado')
+		} else {
+			console.log('desmarcado')
 		}
 	}
 	

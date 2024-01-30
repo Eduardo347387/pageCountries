@@ -7,47 +7,23 @@
         <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    <!-- <mat-form-field  appearance="outline" >
+    <mat-form-field  appearance="outline" >
         <mat-icon matSuffix>sort</mat-icon>
         <mat-label>sortBy</mat-label>
-        <mat-select [formControl]="selectSort" multiple>
-            <ul *ngFor="let sort of sortBy">
-                <mat-option><mat-checkbox (change)="onCheckboxChange(sort.value)" [disabled]="isCheckboxDisabled(sort.value)">{{sort.viewValue}}</mat-checkbox></mat-option>
-            </ul>
-        </mat-select>
-    </mat-form-field> -->
-
-
-    <mat-form-field appearance="outline">
-        <mat-label>Toppings</mat-label>
-        <mat-select [formControl]="selectSort" >
-            <mat-select-trigger>{{selectSort.value}}</mat-select-trigger>
-            <div *ngFor="let sort of sortCountry">
-                <!-- <mat-option [value]="sort">{{sort}}</mat-option> -->
-                <mat-option [value]="sort"><mat-radio-button >{{ sort }}</mat-radio-button></mat-option>
-                
-            </div>
+        <mat-select [formControl]="selectSort">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let sort of sortBy" [value]="sort.value">{{sort.viewValue}}</mat-option>
         </mat-select>
     </mat-form-field>
-
-    <!-- <mat-checkbox [value]="sort" name="sortCheckbox" [checked]="isCheckboxSelected(sort)" (change)="onCheckboxChange(sort)">
-        {{ sort }}
-    </mat-checkbox> -->
 
 
     <mat-form-field  appearance="outline">
         <mat-icon matSuffix>filter_alt</mat-icon>
         <mat-label>Filter By</mat-label>
-        <mat-select>  
-            <button mat-button [matMenuTriggerFor]="regiones">Regiones</button>
-            <mat-menu #regiones="matMenu">
-                <mat-option>None</mat-option>
-                <ul *ngFor="let region of regions">
-                    <mat-option [value]="region.value">{{region.viewValue}}</mat-option>
-                </ul>
-            </mat-menu>
-            <mat-checkbox>UNMember</mat-checkbox>
-           
+        <mat-select [formControl]="filterBy">  
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let region of regions" [value]="region.value">{{ region.viewValue }}</mat-option>
+            <mat-checkbox  (change)="fnCheckUnMember()">UN Member</mat-checkbox>
         </mat-select>
     </mat-form-field>
  

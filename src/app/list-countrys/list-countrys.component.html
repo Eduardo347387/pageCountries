@@ -8,7 +8,7 @@
                     <p class="name-country">{{country.name.common}}</p>
                     <p class="info-country">Capilal: <span>{{getNameCapital(country)}}</span></p>
                     <p class="info-country">Region: <span>{{country.region}}</span></p>
-                    <p class="info-country">Area: <span>{{country.area}} m²</span></p>
+                    <p class="info-country">Area: <span>{{country.area | areaFormat}}</span></p>
                     <p class="info-country">Population: <span>{{country.population | abbreviateNumber}}</span></p>
                 </div>    
         </div>

@@ -29,7 +29,8 @@ import { DetailsCountryComponent } from './details-country/details-country.compo
 
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { MatRadioModule } from '@angular/material/radio'; 
+import { MatRadioModule } from '@angular/material/radio';
+import { AreaFormatPipe } from './pipes/area-format.pipe'; 
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MatRadioModule } from '@angular/material/radio';
     ListCountrysComponent,
     AbbreviateNumberPipe,
     PaginatePipe,
-    DetailsCountryComponent
+    DetailsCountryComponent,
+    AreaFormatPipe
   ],
   imports: [
     BrowserModule,
