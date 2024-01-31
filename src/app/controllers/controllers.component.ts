@@ -81,15 +81,15 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe(query => {
 			this.valueSearch = query!
-			
-			if (this.pageIndex > 0) {
-				this.paginator?.firstPage()	
-			}
+			this.validateIndexPaginate()
+
 			this.logicSearch()
 		});
 
 		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
 			this.valueSort = value!
+			this.validateIndexPaginate()
+
 			this.sortListCountrys(this.listCountrys)
 
 			if (!this.valueSort && this.valueFilterBy && this.valueSearch) {
@@ -101,9 +101,10 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			
 		})
 
-		this.suscribeFilterControl$ =  this.filterBy.valueChanges.subscribe((value => {
+		this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe((value => {
 			this.valueFilterBy = value!
-
+			this.validateIndexPaginate()
+			
 			if (!this.valueFilterBy) {
 				this.allListCountrys()
 			} 	
@@ -111,8 +112,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				this.filterByListCountry(this.valueFilterBy)
 			}
 			this.logicSearch()
-			
-
 			
 		}))
 
@@ -204,6 +203,12 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			console.log('desmarcado')
 		}
 	}
+
+	validateIndexPaginate() {
+		if (this.pageIndex > 0) {
+			this.paginator?.firstPage()	
+		}
+	}
 	
 	
 	// Manejar evento de pagina
@@ -223,6 +228,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
 		}
 	}
+
 
 	ngOnDestroy(): void {
 		this.dataServiceGetList$?.unsubscribe()
