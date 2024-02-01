@@ -2,6 +2,10 @@ export interface valuePaginate{
     page_Size: number,
     page_Number: number
 }
+export interface button {
+  icon?: string;
+  name?: string;
+}
 
 export interface Icountrys {
     name:         Name;

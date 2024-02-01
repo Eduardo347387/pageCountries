@@ -40,7 +40,8 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
 
     this.dataServiceCountry$ = this._share.getListCountry().subscribe({
       next: value => {
-        this.listCountrys = value!;   
+        this.listCountrys = value!; 
+   /*      this.listCountrys.forEach(data=> console.log(data.cca2)) */
         this.actualizarListaPaginada();
       }
     });
@@ -55,9 +56,9 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
     }
   }
 
-  navegarADetallesDelPais(nameCountry: string) {
+  navegarADetallesDelPais(code: string) {
     this._share.setEstado(false);
-    this.router.navigate(['/country', nameCountry]);
+    this.router.navigate(['/country', code]);
   }
 
   actualizarListaPaginada() {

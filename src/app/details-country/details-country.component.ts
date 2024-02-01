@@ -3,18 +3,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../shared.service';
 import { Subscription } from 'rxjs';
 import { ApiService } from '../apiService/api.service';
-import { Icountrys, Name, Translation, Currencies, Aed } from '../models/countrys.model';
+import { Icountrys, Name, Translation, Currencies, Aed, Flags, button } from '../models/countrys.model';
 @Component({
   selector: 'app-details-country',
   templateUrl: './details-country.component.html',
   styleUrls: ['./_details-country.scss']
 })
 export class DetailsCountryComponent implements OnInit, OnDestroy {
-  divisa?:Aed
+
+  codeCountry?: string
+  borders:button [] = []
+ 
   dataCountry?: Icountrys []
   estado?: boolean
   estadoService$?:Subscription
   suscriptionRoute?: Subscription
+  dataServiceSearch$?:Subscription
 
   constructor(
     private route: ActivatedRoute,
@@ -31,13 +35,47 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.suscriptionRoute = this.route.params.subscribe(params => {
-        this._apiservice.searchCountry( params['nameCountry']).subscribe(data => {
-          this.dataCountry = data
-        /*   this.dataCountry.forEach(data=> this.getCurrencies(data.currencies)) */
-        })
+      this.codeCountry = params['code']
+      this.borders = []
+      
+      this.fnSearchCodeCountry(this.codeCountry!).then(data => {
+        this.dataCountry = data
+        this.getBorders(data[0].borders!)
+      })
+   
     })
-
   } 
+
+  getNewCountry(code:string) {
+    this.router.navigate(['/country', code]);
+  }
+
+  
+  getBorders(border: string[]) {
+    if (border !== undefined) {
+      border.forEach(data => {
+      this.getflagName(data)
+      })
+    }
+  }
+
+  getflagName(code:string) {
+    this.fnSearchCodeCountry(code).then(data => {
+      const objeto = {icon:data[0].flag,name:data[0].cca3}
+      this.borders = [...this.borders,objeto]
+    })
+   
+  }
+  
+  fnSearchCodeCountry(code: string): Promise<Icountrys[]> {
+    return new Promise((resolve) => {
+      this.dataServiceSearch$ =  this._apiservice.searchCodeCountry(code).subscribe(
+        data => {
+          resolve(data);
+        }
+      );
+    });
+  }
 
   getNameNative(name: Name ):string{
     if (name.nativeName !== undefined) {
@@ -81,12 +119,7 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
       return cadena
     }else return 'No found'
   }
-
-
-
-
-  
-  
+    
   @HostListener('window:popstate', ['$event'])
     onPopState(event: Event) {
     this.volver();
@@ -94,7 +127,6 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
 
 
   volver() {
-    console.log('volver')
     this._share.setEstado(true)
     this.router.navigate([''])
   }
@@ -102,6 +134,7 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.estadoService$?.unsubscribe()
     this.suscriptionRoute?.unsubscribe()
+     this.dataServiceSearch$?.unsubscribe()
   }  
 
 }
