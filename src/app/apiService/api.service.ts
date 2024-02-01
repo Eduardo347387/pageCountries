@@ -45,14 +45,13 @@ export class ApiService {
     return this._httpClient.get<Icountrys[]>(`${this.baseURL}alpha/${code}`)
       .pipe(
         catchError(this.handleError)
-      );
+    );
   }
 
   
 
   private handleError(error: HttpErrorResponse) {
-    // Puedes personalizar este bloque según tus necesidades.
-    return throwError('Error en la solicitud. Por favor, inténtelo de nuevo más tarde.');
+    return throwError(false);    
   }
 }
 

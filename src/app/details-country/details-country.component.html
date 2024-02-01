@@ -11,29 +11,34 @@
             <p>Back</p>
         </button>
         <div class="card-info" *ngFor="let country of dataCountry">
-            <img src="{{country.flags.png}}" class="img-bandera" alt="">
+            <div class="img-box">
+                <img src="{{country.flags.svg}}" class="img-bandera" alt="{{country.flags.alt}}">
+            </div>
+            
             <div class="content">
                 <section class="info">
-                    <h1 class="title"></h1>
-                    <p>Native name: <span>{{getNameNative(country.name)}}</span></p>
-                    <p>Population: <span>{{country.population | abbreviateNumber}}</span></p>
-                    <p>Region: <span>{{country.region}}</span></p>
-                    <p>Sub Region: <span>{{country.subregion}}</span></p>
-                    <p>Capital: <span>{{country.capital}}</span></p>
+                    <h1 class="title">{{country.name.common}}</h1>
+                    <p class="name">Native name: <span class="data">{{getNameNative(country.name)}}</span></p>
+                    <p class="name">Population: <span class="data">{{country.population | abbreviateNumber}}</span></p>
+                    <p class="name">Region: <span class="data">{{country.region}}</span></p>
+                    <p class="name">Sub Region: <span class="data">{{country.subregion}}</span></p>
+                    <p class="name">Capital: <span class="data">{{country.capital}}</span></p>
                 </section>
                 <section class="detalles">
-                    <p>Top Level Domain: <span>{{getTopLevelDomain(country.tld)}}</span></p>
-                    <p>Currencies: <span>{{getCurrencies(country.currencies)}}</span></p>
-                    <p>Languajes: <span>{{getLanguages(country.languages)}}</span></p>
+                    <p class="name">Top Level Domain: <span class="data">{{getTopLevelDomain(country.tld)}}</span></p>
+                    <p class="name">Currencies: <span class="data">{{getCurrencies(country.currencies)}}</span></p>
+                    <p class="name">Languajes: <span class="data">{{getLanguages(country.languages)}}</span></p>
                 </section>
 
                 <div class="container-border">
-                    <p>Border countries</p>
-                    <span class="border" *ngIf="country.borders === undefined">None</span>
+                    <p class="name">Border countries:
+                        <span class="data" *ngIf="country.borders === undefined">None</span>
+                    </p>
+                   
                     <div *ngIf="borders.length > 0" class="box-border-countries">
                         <button class="border" (click)="getNewCountry(border.name!)" *ngFor="let border of borders; let i = index">
-                        <span>{{border.icon}}</span>
-                        <span>{{border.name}}</span>
+                        <span class="border-icon">{{border.icon}}</span>
+                        <span class="border-name">{{border.name}}</span>
                         </button>
                     </div>
                 </div>

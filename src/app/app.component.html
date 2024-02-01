@@ -1,14 +1,15 @@
 <main class="container">
     <app-header/>
-    <section  class="body">
-        <ng-container *ngIf="estado">
-            <app-controllers />
-            <app-list-countrys/>
-        </ng-container>
-    </section>
+    <div class="body" *ngIf="estado">
+        <app-controllers />
+        <app-list-countrys />
+    </div>
+   
+    <router-outlet></router-outlet>
 </main>
 
-<router-outlet></router-outlet>
+
+
 
 
 

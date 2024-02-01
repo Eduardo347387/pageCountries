@@ -38,6 +38,14 @@
     color: var(--Very_Light_Gray);
 }
 
+.notFound{
+    margin-top: 5rem;
+    font-size: 1.5rem;
+    text-align: center;
+    color: var(--White);
+    font-weight: 800;
+}
+
 
 @media(min-width:530px){
     .demo-paginator {

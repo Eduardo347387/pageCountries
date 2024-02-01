@@ -69,9 +69,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 					this.listCountrys = value;
 					this.length = this.listCountrys.length;
 				}
-			},
-			error: error => {
-				console.log(error)
 			}
 		})
 	}
@@ -79,11 +76,20 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	ngOnInit(): void {
 		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
-		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe(query => {
+		/* this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe(query => {
 			this.valueSearch = query!
 			this.validateIndexPaginate()
 
 			this.logicSearch()
+		});
+ 		*/
+
+		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe({
+			next: value => {
+				this.valueSearch = value!
+				this.validateIndexPaginate()
+				this.logicSearch()
+			}
 		});
 
 		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
@@ -101,7 +107,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			
 		})
 
-		this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe((value => {
+		/* this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe((value => {
 			this.valueFilterBy = value!
 			this.validateIndexPaginate()
 			
@@ -113,14 +119,38 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			}
 			this.logicSearch()
 			
+		})) */
+
+		this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe(({
+			next: value => {
+				this.valueFilterBy = value!
+				this.validateIndexPaginate()
+				
+				if (!this.valueFilterBy) {
+					this.allListCountrys()
+				} 	
+				else {
+					this.filterByListCountry(this.valueFilterBy)
+				}
+				this.logicSearch()
+			}
 		}))
 
 	}
 
-	allListCountrys() {
+	/* allListCountrys() {
 		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe(data => {
 			this.sortListCountrys(data)
 			this.logicValueSort(data)
+		})
+	} */
+
+	allListCountrys() {
+		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe({
+			next: data => {
+				this.sortListCountrys(data)
+				this.logicValueSort(data)
+			}
 		})
 	}
 
@@ -136,10 +166,32 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		return listCountry.sort((a, b) => (a.area < b.area) ? 1 : -1)
 	}
 
-	searchCountry(country: string){
-		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(data => {	
-			this.sortListCountrys(data)
-			this.logicValueSort(data)		
+	/* searchCountry(country: string) {
+		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(
+			data => {	
+				this.sortListCountrys(data)
+				this.logicValueSort(data)
+			},
+			error => {
+				if (!error) {
+					this._share.setListCountry(this.listCountrys=[])
+				}
+			}
+		)
+	} */
+
+
+	searchCountry(country: string) {
+		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe({
+			next: data => {
+				this.sortListCountrys(data)
+				this.logicValueSort(data)
+			},
+			error: error => {
+				if (!error) {
+					this._share.setListCountry(this.listCountrys=[])
+				}
+			}
 		})
 	}
 
