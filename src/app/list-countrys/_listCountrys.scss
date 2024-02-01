@@ -48,7 +48,7 @@
         }
         &:hover{
             cursor: pointer;
-            background-color: hsla(0, 0%, 0%, 0.417);
+            background-color: hsl(0, 0%, 0%);
             opacity: 0.6;
         }
     }
@@ -68,10 +68,16 @@
 
 @media(min-width:1000px){
     .container-list-countrys{
+        row-gap: 6rem;
         position: relative;
         left: 50%;
         transform: translateX(-50%);
         max-width: 130rem;
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+@media(min-width:1100px){
+    .container-list-countrys .card-country{
+        width: 33rem;
     }
 }

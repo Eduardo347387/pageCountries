@@ -1,5 +1,8 @@
 .header {
-    padding: 2rem 3.5rem;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    padding: 1.6rem 3.5rem;
     background-color: var(--Dark_Blue);
     display: flex;
     align-items: center;

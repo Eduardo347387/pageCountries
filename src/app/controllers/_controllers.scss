@@ -1,29 +1,39 @@
 .container-controllers{
-    padding: 2rem 1.5rem;
+    margin-top: 11rem;
+    padding: 0rem 1.5rem;
     display: flex;
     flex-direction: column;
     mat-form-field{
        background-color: var(--Dark_Blue); 
-       height: 5.5rem;
+       height: 5.6rem;
        border-radius: .5rem;
        margin-bottom: 2rem;
+    
         mat-label, mat-icon{   
             color: var(--White);
         }
-        input,mat-select{
-            
+        input,mat-select{  
             color: var(--White);
             &::placeholder{
                 color: var(--White);
             }
         }
     }
+   
+
+    .container-sort,.container-filter{
+        &:hover {
+            background-color: rgba(240, 248, 255, 0.169);
+        }
+    }
+    
+  
 }
 
 
 .demo-paginator {
+    margin-top: 3rem;
     background-color: transparent;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding-bottom: 1.5rem;
     color: var(--Very_Light_Gray);
 }
@@ -43,25 +53,30 @@
         padding-bottom: 3rem;
         
         .container-search{
-            flex: 1;
-            left: 0;
             max-width: 36rem;
         }
-        .container-sort,.container-filter{ 
-            
+        .container-sort,.container-filter{    
             position: absolute;
-            width: 15rem;
+            max-width: 18rem;
         }
         .container-filter{
-          
             right: 1.5rem;
         }
         .container-sort{
-            right: 17.5rem;
+            right: 20.8rem;
         }
     }
     .demo-paginator{
+        margin-top: 0;
         box-shadow: none;
     }
    
+}
+
+@media(min-width:800px){
+    .container-controllers{
+        .container-search{
+            width: 40%;
+        }
+    }
 }
