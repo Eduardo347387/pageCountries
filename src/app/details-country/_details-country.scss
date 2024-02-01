@@ -1,6 +1,7 @@
 .card-details{
+    position: absolute;
+    top: 11rem;
     background-color: var(--Very_Dark-Blue);
-    height: 100%;
     padding: 2.5rem;
     .button-back{
         display: flex;
@@ -21,6 +22,7 @@
     }
     .card-info{
         .img-bandera{
+            min-width: 20rem;
             width: 100%;
             height: 20rem;
         }

@@ -13,7 +13,6 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
 
   codeCountry?: string
   borders:button [] = []
- 
   dataCountry?: Icountrys []
   estado?: boolean
   estadoService$?:Subscription

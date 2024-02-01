@@ -47,7 +47,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	]
 
 	length:number = 0;
-	pageSize = 20;
+	pageSize = 15;
 	pageIndex = 0;
 	pageSizeOptions = [5,10,15,20,25];
 

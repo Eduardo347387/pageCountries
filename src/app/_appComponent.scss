@@ -1,4 +1,18 @@
 //Style movile
 .container{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     background-color: var(--Very_Dark-Blue);
+}
+
+@media(min-width:1200px){
+    .container{
+        .body{
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 120rem;
+        }
+    }
 }

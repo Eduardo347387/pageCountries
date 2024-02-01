@@ -22,7 +22,7 @@
 
 
 .demo-paginator {
-    background-color: hsl(209, 23%, 22%);
+    background-color: transparent;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding-bottom: 1.5rem;
     color: var(--Very_Light_Gray);
@@ -33,4 +33,35 @@
     .demo-paginator {
         padding-bottom: 0;
     }
+}
+
+@media(min-width:700px){
+    .container-controllers{
+        position: relative;
+        flex-direction: row;
+        column-gap: 1rem;
+        padding-bottom: 3rem;
+        
+        .container-search{
+            flex: 1;
+            left: 0;
+            max-width: 36rem;
+        }
+        .container-sort,.container-filter{ 
+            
+            position: absolute;
+            width: 15rem;
+        }
+        .container-filter{
+          
+            right: 1.5rem;
+        }
+        .container-sort{
+            right: 17.5rem;
+        }
+    }
+    .demo-paginator{
+        box-shadow: none;
+    }
+   
 }
