@@ -1,27 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, inject} from '@angular/core';
+import { LightModeService } from '../apiService/light-mode.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./_header.scss']
 })
-export class HeaderComponent implements OnInit {
-  modeDark?: boolean 
-  modolight?: boolean
-  
+export class HeaderComponent implements OnInit, OnDestroy{
+  private _lightMode = inject(LightModeService)
+
+  datathemeSuscribe?: Subscription
+  theme?: boolean
+
   ngOnInit(): void {
-    this.modeDark = false
-    this.modolight = true
+    this.datathemeSuscribe = this._lightMode.getIsLightMode().subscribe({
+        next: data => {
+          this.theme = data
+        }
+      })
   }
 
-  FnmodeButton() {
-    if (this.modolight) {
-      this.modolight = false
-      this.modeDark  = true
-    } else {
-      this.modolight = true
-      this.modeDark  = false  
-    }
+
+   toggleLightMode() {
+     this._lightMode.toggleDarkMode()
+   }
+  
+  ngOnDestroy(): void {
+      this.datathemeSuscribe?.unsubscribe()
   }
  
 

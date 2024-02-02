@@ -11,6 +11,7 @@
         flex: 1;
         color: var(--Very_Light_Gray);
     }
+    @import '../../assets/scss/color-light';
     .button {
         display: flex;
         align-items: center;
@@ -24,14 +25,19 @@
         mat-icon{
             color: var(--Very_Light_Gray);
         }
+        @import '../../assets/scss/color-light';
         .buttonText{
             display: none;
+     
         }
         &:hover{
             background-color: hsla(209, 26%, 17%, 0.388);
         }
     }
 }
+
+@import '../../assets/scss/background-light';
+
 
 @media(min-width:766px){
     .header{
@@ -42,14 +48,14 @@
             height: 4rem;
             mat-icon {
                 font-size: 2.3rem;
-            }
-            
+            }     
             .buttonText{
                 color: var(--White);
                 font-size: 1.3rem;
                 font-weight: 300;
                 display: block;
             }
+            @import '../../assets/scss/color-light';
         }
     }
 }
