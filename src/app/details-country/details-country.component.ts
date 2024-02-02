@@ -8,7 +8,7 @@ import { LightModeService } from '../apiService/light-mode.service';
 @Component({
   selector: 'app-details-country',
   templateUrl: './details-country.component.html',
-  styleUrls: ['./_details-country.scss']
+  styleUrls: ['./_details-country.scss','./_button-styles.scss','./_card-info-styles.scss']
 })
 export class DetailsCountryComponent implements OnInit, OnDestroy {
 
