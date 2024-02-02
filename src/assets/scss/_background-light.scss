@@ -1,3 +1,14 @@
 .background-light {
     background-color: var(--Very_Light_Gray);
 }
+
+.box-shadow{
+    box-shadow: 0 1rem 1rem rgb(0,0,0,.2);
+}
+
+.hover {
+    &:hover {
+        background-color: rgb(232, 231, 231);
+        opacity: 1;
+    }
+}

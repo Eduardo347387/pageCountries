@@ -1,9 +1,10 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output, inject } from '@angular/core';
 import { ApiService } from '../apiService/api.service';
 import { Icountrys } from '../models/countrys.model';
 import { SharedService } from '../shared.service';
-import { Subscription } from 'rxjs';
+import { Subscription, distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
+import { LightModeService } from '../apiService/light-mode.service';
 
 @Component({
   selector: 'app-list-countrys',
@@ -13,15 +14,31 @@ import { Router } from '@angular/router';
 export class ListCountrysComponent implements OnInit, OnDestroy {
   dataService$?: Subscription;
   dataServiceCountry$?: Subscription;
+  dataServiceAllCountry$?: Subscription
+  datathemeSuscribe?: Subscription
+  
   page_size: number = 0;
   page_number: number = 1;
   listCountrys: Icountrys[] = [];
   listaCountrysPaginada: Icountrys[] = [];
-  filterValue:string = "Africa"
+  activeThemeLight?: boolean
+  
+  
+/*   @Output() estadoChanged = new EventEmitter<boolean>(); */
 
-  @Output() estadoChanged = new EventEmitter<boolean>();
+  private _apiCountry = inject(ApiService) 
+  private _share = inject(SharedService) 
+  private router = inject(Router) 
+  private _lightMode = inject(LightModeService)
 
-  constructor(private _apiCountry: ApiService, private _share: SharedService, private router: Router) {
+  ngOnInit(): void {
+    
+    this.datathemeSuscribe = this._lightMode.getIsLightMode().pipe(distinctUntilChanged()).subscribe({
+      next: state => {
+        this.activeThemeLight = state
+      }
+    })
+
     this.dataService$ = this._share.getValuePaginate().subscribe({
       next: value => {
         this.page_size = value?.page_Size!;
@@ -30,18 +47,16 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
       }
     });
 
-  }
 
-  ngOnInit(): void {
-    this._apiCountry.getallCountrys().subscribe(country => {
-      this._share.setListCountry(country);
+    this.dataServiceAllCountry$ = this._apiCountry.getallCountrys().subscribe({
+      next: listCountry => {
+        this._share.setListCountry(listCountry);
+      }
     });
-
 
     this.dataServiceCountry$ = this._share.getListCountry().subscribe({
       next: value => {
         this.listCountrys = value!; 
-   /*      this.listCountrys.forEach(data=> console.log(data.cca2)) */
         this.actualizarListaPaginada();
       }
     });
@@ -64,11 +79,12 @@ export class ListCountrysComponent implements OnInit, OnDestroy {
   actualizarListaPaginada() {
     const startIndex = (this.page_number - 1) * this.page_size;
     const endIndex = startIndex + this.page_size;
-    this.listaCountrysPaginada = this.listCountrys.slice(startIndex, endIndex);
-   
+    this.listaCountrysPaginada = this.listCountrys.slice(startIndex, endIndex); 
   }
 
   ngOnDestroy(): void {
     this.dataService$?.unsubscribe();
+    this.dataServiceCountry$?.unsubscribe()
+    this.dataServiceAllCountry$?.unsubscribe()
   }
 }

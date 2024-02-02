@@ -1,10 +1,10 @@
 
 <ng-container *ngIf="!estado">
-    <div class="card-details">
-        <button class="button-back" (click)="volver()">
+    <div class="card-details" [ngClass]="{'background-light':activeThemeLight}">
+        <button class="button-back"  [ngClass]="{'background-light color-light hover':activeThemeLight}" (click)="volver()">
             <div class="Icon">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"
-                    className="w-6 h-6">
+                    className="w-6 h-6">    
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                 </svg>
             </div>
@@ -17,26 +17,26 @@
             
             <div class="content">
                 <section class="info">
-                    <h1 class="title">{{country.name.common}}</h1>
-                    <p class="name">Native name: <span class="data">{{getNameNative(country.name)}}</span></p>
-                    <p class="name">Population: <span class="data">{{country.population | abbreviateNumber}}</span></p>
-                    <p class="name">Region: <span class="data">{{country.region}}</span></p>
-                    <p class="name">Sub Region: <span class="data">{{country.subregion}}</span></p>
-                    <p class="name">Capital: <span class="data">{{country.capital}}</span></p>
+                    <h1 class="title" [ngClass]="{'color-light':activeThemeLight}">{{country.name.common}}</h1>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Native name: <span class="data">{{getNameNative(country.name)}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Population: <span class="data">{{country.population | abbreviateNumber}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Region: <span class="data">{{country.region}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Sub Region: <span class="data">{{country.subregion}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Capital: <span class="data">{{country.capital}}</span></p>
                 </section>
                 <section class="detalles">
-                    <p class="name">Top Level Domain: <span class="data">{{getTopLevelDomain(country.tld)}}</span></p>
-                    <p class="name">Currencies: <span class="data">{{getCurrencies(country.currencies)}}</span></p>
-                    <p class="name">Languajes: <span class="data">{{getLanguages(country.languages)}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Top Level Domain: <span class="data">{{getTopLevelDomain(country.tld)}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Currencies: <span class="data">{{getCurrencies(country.currencies)}}</span></p>
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Languajes: <span class="data">{{getLanguages(country.languages)}}</span></p>
                 </section>
 
                 <div class="container-border">
-                    <p class="name">Border countries:
+                    <p class="name" [ngClass]="{'color-light':activeThemeLight}">Border countries:
                         <span class="data" *ngIf="country.borders === undefined">None</span>
                     </p>
                    
                     <div *ngIf="borders.length > 0" class="box-border-countries">
-                        <button class="border" (click)="getNewCountry(border.name!)" *ngFor="let border of borders; let i = index">
+                        <button [ngClass]="{'color-light border-Color hover':activeThemeLight}" class="border" (click)="getNewCountry(border.name!)" *ngFor="let border of borders; let i = index">
                         <span class="border-icon">{{border.icon}}</span>
                         <span class="border-name">{{border.name}}</span>
                         </button>

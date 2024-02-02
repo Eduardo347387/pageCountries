@@ -1,4 +1,4 @@
-<main class="container">
+<main class="container"  [ngClass]="{'background-light':activeThemeLight}">
     <app-header/>
     <div class="body" *ngIf="estado">
         <app-controllers />

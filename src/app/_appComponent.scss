@@ -6,11 +6,15 @@
     background-color: var(--Very_Dark-Blue);
 
 }
+
+@import '../assets/scss/background-light';
+
 @media(min-width:600px){
     .container{
         min-height: 100vh;
     }
 }
+
 @media(min-width:1200px){
     .container{
         .body{

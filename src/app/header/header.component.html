@@ -1,14 +1,14 @@
 <header [ngClass]="{'background-light':theme}" class="header">
     <!-- <h1 class="title">Where in the world?</h1> -->
     <h1 class="title" [ngClass]="{'color-light':theme}">#Countrys</h1>
-    <button class="button" (click)="toggleLightMode()">
+    <button class="button" [ngClass]="{'hover':theme}" (click)="toggleLightMode()">
         <ng-container *ngIf="!theme">
             <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="light_mode"></mat-icon>
             <p class="buttonText">Light Mode</p>
         </ng-container>
        
         <ng-container *ngIf="theme">
-            <mat-icon [ngClass]="{'color-light':theme}"aria-hidden="false" aria-label="Example home icon" fontIcon="bedtime"></mat-icon>
+            <mat-icon [ngClass]="{'color-light':theme}" aria-hidden="false" aria-label="Example home icon" fontIcon="bedtime"></mat-icon>
             <p [ngClass]="{'color-light':theme}"class="buttonText">Dark Mode</p>
         </ng-container>
         

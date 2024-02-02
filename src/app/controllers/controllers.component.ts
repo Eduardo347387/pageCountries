@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Icountrys} from '../models/countrys.model';
 import { SharedService } from '../shared.service';
@@ -7,6 +7,7 @@ import { Subscription} from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged} from 'rxjs'
 import { ApiService } from '../apiService/api.service';
+import { LightModeService } from '../apiService/light-mode.service';
 
 @Component({
   selector: 'app-controllers',
@@ -24,9 +25,10 @@ export class ControllersComponent implements OnDestroy, OnInit{
 	suscribeSearchControl$?:Subscription
 	suscribeSelectSortControl$?: Subscription
 	suscribeFilterControl$?: Subscription
+	datathemeSuscribe$?: Subscription
 	
+	activeThemeLight?:boolean
 	listCountrys:Icountrys[] = []
-	
 	valueSort?:string 
 	valueSearch: string = '' 
 	valueFilterBy?:string
@@ -59,10 +61,23 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 	
 	searchControl = new FormControl('');
-	selectSort = new FormControl('');
-	filterBy = new FormControl('');
+	selectSortControl = new FormControl('');
+	filterByControl = new FormControl('');
 
-	constructor(private _share: SharedService, private _apiService:ApiService) {
+	private _lightMode = inject(LightModeService)
+	private _share = inject(SharedService)
+	private _apiService = inject(ApiService)
+
+
+	ngOnInit(): void {
+		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
+
+		this.datathemeSuscribe$ = this._lightMode.getIsLightMode().pipe(distinctUntilChanged()).subscribe({
+			next: state => {
+				this.activeThemeLight = state
+			}
+		})
+
 		this.dataServiceGetList$ = this._share.getListCountry().subscribe({
 			next: value => {
 				if (value !== undefined) {
@@ -71,10 +86,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				}
 			}
 		})
-	}
-
-	ngOnInit(): void {
-		this._share.setValuePaginate({ page_Size: this.pageSize, page_Number: this.pageIndex + 1 })
 
 		/* this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe(query => {
 			this.valueSearch = query!
@@ -82,7 +93,8 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 			this.logicSearch()
 		});
- 		*/
+		*/
+
 
 		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe({
 			next: value => {
@@ -92,7 +104,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			}
 		});
 
-		this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
+		/* this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
 			this.valueSort = value!
 			this.validateIndexPaginate()
 
@@ -105,6 +117,21 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				this.logicSearch()
 			}
 			
+		}) */
+
+		this.suscribeSelectSortControl$ = this.selectSortControl.valueChanges.subscribe({
+			next: value => {
+				this.valueSort = value!
+				this.validateIndexPaginate()
+				this.sortListCountrys(this.listCountrys)
+
+				if (!this.valueSort && this.valueFilterBy && this.valueSearch) {
+					this.searchCountry(this.valueSearch)
+				}
+				else if(!this.valueSort) {
+					this.logicSearch()
+				}
+			}
 		})
 
 		/* this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe((value => {
@@ -121,7 +148,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			
 		})) */
 
-		this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe(({
+		this.suscribeFilterControl$ = this.filterByControl.valueChanges.subscribe(({
 			next: value => {
 				this.valueFilterBy = value!
 				this.validateIndexPaginate()
@@ -290,6 +317,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		this.suscribeSelectSortControl$?.unsubscribe()
 		this.suscribeFilterControl$?.unsubscribe()
 		this.dataServiceCaregorty$?.unsubscribe()
+		this.datathemeSuscribe$?.unsubscribe()
 	}
   
 }

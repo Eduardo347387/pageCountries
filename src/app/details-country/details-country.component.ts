@@ -1,9 +1,10 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedService } from '../shared.service';
-import { Subscription } from 'rxjs';
+import { Subscription, distinctUntilChanged } from 'rxjs';
 import { ApiService } from '../apiService/api.service';
 import { Icountrys, Name, Translation, Currencies, Aed, Flags, button } from '../models/countrys.model';
+import { LightModeService } from '../apiService/light-mode.service';
 @Component({
   selector: 'app-details-country',
   templateUrl: './details-country.component.html',
@@ -15,33 +16,41 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
   borders:button [] = []
   dataCountry?: Icountrys []
   estado?: boolean
+  activeThemeLight?:boolean
   estadoService$?:Subscription
   suscriptionRoute?: Subscription
-  dataServiceSearch$?:Subscription
+  dataServiceSearch$?: Subscription
+  datathemeSuscribe?:Subscription
+  
+  private route = inject(ActivatedRoute) 
+  private router = inject(Router) 
+  private _share = inject(SharedService) 
+  private _apiservice = inject(ApiService) 
+  private _lightMode = inject(LightModeService)
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private _share: SharedService,
-    private _apiservice:ApiService
-  ){
+  ngOnInit(): void {
+    this.suscriptionRoute = this.route.params.subscribe({
+      next: params => {
+          this.codeCountry = params['code']
+          this.borders = []
+          
+          this.fnSearchCodeCountry(this.codeCountry!).then(data => {
+            this.dataCountry = data
+            this.getBorders(data[0].borders!)
+          })
+      }
+    })
+
+    this.datathemeSuscribe = this._lightMode.getIsLightMode().pipe(distinctUntilChanged()).subscribe({
+      next: state => {
+        this.activeThemeLight = state
+      }
+    })
+
     this.estadoService$ = this._share.getEstado().subscribe({
       next: state => {
           this.estado = state
       }
-    })
-  }
-
-  ngOnInit(): void {
-    this.suscriptionRoute = this.route.params.subscribe(params => {
-      this.codeCountry = params['code']
-      this.borders = []
-      
-      this.fnSearchCodeCountry(this.codeCountry!).then(data => {
-        this.dataCountry = data
-        this.getBorders(data[0].borders!)
-      })
-   
     })
   } 
 
@@ -133,7 +142,8 @@ export class DetailsCountryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.estadoService$?.unsubscribe()
     this.suscriptionRoute?.unsubscribe()
-     this.dataServiceSearch$?.unsubscribe()
+    this.dataServiceSearch$?.unsubscribe()
+    this.datathemeSuscribe?.unsubscribe()
   }  
 
 }

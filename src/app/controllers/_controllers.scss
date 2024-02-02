@@ -8,25 +8,25 @@
        height: 5.6rem;
        border-radius: .5rem;
        margin-bottom: 2rem;
-    
-        mat-label, mat-icon{   
+
+        mat-label, mat-icon,input,mat-select{  
             color: var(--White);
         }
-        input,mat-select{  
+        @import '../../assets/scss/color-light';
+
+    }
+    .search{
+        &::placeholder{
             color: var(--White);
-            &::placeholder{
-                color: var(--White);
-            }
         }
     }
-   
 
     .container-sort,.container-filter{
         &:hover {
-            background-color: rgba(240, 248, 255, 0.169);
+            background-color: var(--Very_Dark_Blue-text);
         }
     }
-    
+    @import '../../assets/scss/background-light';
   
 }
 
@@ -46,6 +46,7 @@
     font-weight: 800;
 }
 
+@import '../../assets/scss/color-light';
 
 @media(min-width:530px){
     .demo-paginator {

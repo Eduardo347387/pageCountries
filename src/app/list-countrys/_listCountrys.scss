@@ -44,14 +44,17 @@
                     color: var(--Very_Light_Gray);
                     opacity: .8;
                 }
+                @import '../../assets/scss/color-light';
             }
         }
+        @import '../../assets/scss/color-light';
         &:hover{
             cursor: pointer;
             background-color: hsl(0, 0%, 0%);
             opacity: 0.6;
         }
     }
+    @import '../../assets/scss/background-light';
 }
 
 @media(min-width:600px){

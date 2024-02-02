@@ -1,26 +1,26 @@
 
 <div class="container-controllers">
 
-    <mat-form-field class="container-search " appearance="outline">
-        <mat-label>Search</mat-label>
-        <input class="search" matInput [formControl]="searchControl" placeholder="Country">
-        <mat-icon matSuffix>search</mat-icon>
+    <mat-form-field [ngClass]="{'background-light':activeThemeLight,'hover':activeThemeLight}" class="container-search " appearance="outline">
+        <mat-label [ngClass]="{'color-light':activeThemeLight}" >Search</mat-label>
+        <input [ngClass]="{'placeholder color-light':activeThemeLight}" class="search" matInput [formControl]="searchControl" placeholder="Country">
+        <mat-icon matSuffix [ngClass]="{'color-light':activeThemeLight}" >search</mat-icon>
     </mat-form-field>
 
-    <mat-form-field class="container-sort" appearance="outline" >
-        <mat-icon matSuffix>sort</mat-icon>
-        <mat-label>sortBy</mat-label>
-        <mat-select [formControl]="selectSort">
+    <mat-form-field  [ngClass]="{'background-light':activeThemeLight,'hover':activeThemeLight}" class="container-sort" appearance="outline" >
+        <mat-icon matSuffix [ngClass]="{'color-light':activeThemeLight}" >sort</mat-icon>
+        <mat-label [ngClass]="{'color-light':activeThemeLight}" >sortBy</mat-label>
+        <mat-select [ngClass]="{'color-light':activeThemeLight}" [formControl]="selectSortControl">
             <mat-option>None</mat-option>
             <mat-option *ngFor="let sort of sortBy" [value]="sort.value">{{sort.viewValue}}</mat-option>
         </mat-select>
     </mat-form-field>
 
 
-    <mat-form-field class="container-filter" appearance="outline">
-        <mat-icon matSuffix>filter_alt</mat-icon>
-        <mat-label>Filter By</mat-label>
-        <mat-select [formControl]="filterBy">  
+    <mat-form-field  [ngClass]="{'background-light':activeThemeLight,'hover':activeThemeLight}" class="container-filter" appearance="outline">
+        <mat-icon matSuffix [ngClass]="{'color-light':activeThemeLight}">filter_alt</mat-icon>
+        <mat-label [ngClass]="{'color-light':activeThemeLight}">Filter By</mat-label>
+        <mat-select [ngClass]="{'color-light':activeThemeLight}" [formControl]="filterByControl">  
             <mat-option>None</mat-option>
             <mat-option *ngFor="let region of regions" [value]="region.value">{{ region.viewValue }}</mat-option>
          <!--    <mat-checkbox  (change)="fnCheckUnMember()">UN Member</mat-checkbox> -->
@@ -29,7 +29,7 @@
 
 </div>
 
-<mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+<mat-paginator [ngClass]="{'color-light':activeThemeLight}" #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
     [pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
     [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize" [pageIndex]="pageIndex"
     aria-label="Select page">

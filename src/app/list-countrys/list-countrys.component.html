@@ -1,15 +1,15 @@
 
 <section class="container-list-countrys" *ngIf="listCountrys.length > 0">
-        <div class="card-country" *ngFor="let country of listaCountrysPaginada" (click)="navegarADetallesDelPais(country.cca2)">
+        <div class="card-country" [ngClass]="{'background-light':activeThemeLight,'hover':activeThemeLight}" *ngFor="let country of listaCountrysPaginada" (click)="navegarADetallesDelPais(country.cca2)">
                 <div class="img-box">
                     <img class="img-country" src="{{country.flags.svg}}" alt={{country.flags.alt}}>
                 </div>
-                <div class="content">
+                <div class="content" [ngClass]="{'color-light':activeThemeLight}">
                     <p class="name-country">{{country.name.common}}</p>
-                    <p class="info-country">Capilal: <span>{{getNameCapital(country)}}</span></p>
-                    <p class="info-country">Region: <span>{{country.region}}</span></p>
-                    <p class="info-country">Area: <span>{{country.area | areaFormat}}</span></p>
-                    <p class="info-country">Population: <span>{{country.population | abbreviateNumber}}</span></p>
+                    <p class="info-country">Capilal: <span [ngClass]="{'color-light':activeThemeLight}">{{getNameCapital(country)}}</span></p>
+                    <p class="info-country">Region: <span [ngClass]="{'color-light':activeThemeLight}">{{country.region}}</span></p>
+                    <p class="info-country">Area: <span [ngClass]="{'color-light':activeThemeLight}">{{country.area | areaFormat}}</span></p>
+                    <p class="info-country">Population: <span [ngClass]="{'color-light':activeThemeLight}">{{country.population | abbreviateNumber}}</span></p>
                 </div>    
         </div>
 </section>
