@@ -36,7 +36,8 @@
 </mat-paginator>
 
 
-<div class="notFound" *ngIf="!listCountrys.length">There are no results with {{valueSearch}}</div>
+<div class="notFound" [ngClass]="{'color-light':activeThemeLight}"
+*ngIf="!listCountrys.length">There are no results with {{valueSearch}}</div>
 
 
 
