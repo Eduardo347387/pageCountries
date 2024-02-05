@@ -87,15 +87,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 			}
 		})
 
-		/* this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500),distinctUntilChanged()).subscribe(query => {
-			this.valueSearch = query!
-			this.validateIndexPaginate()
-
-			this.logicSearch()
-		});
-		*/
-
-
 		this.suscribeSearchControl$ = this.searchControl.valueChanges.pipe(debounceTime(500), distinctUntilChanged()).subscribe({
 			next: value => {
 				this.valueSearch = value!
@@ -103,21 +94,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				this.logicSearch()
 			}
 		});
-
-		/* this.suscribeSelectSortControl$ = this.selectSort.valueChanges.subscribe(value => {
-			this.valueSort = value!
-			this.validateIndexPaginate()
-
-			this.sortListCountrys(this.listCountrys)
-
-			if (!this.valueSort && this.valueFilterBy && this.valueSearch) {
-				this.searchCountry(this.valueSearch)
-			}
-			else if(!this.valueSort) {
-				this.logicSearch()
-			}
-			
-		}) */
 
 		this.suscribeSelectSortControl$ = this.selectSortControl.valueChanges.subscribe({
 			next: value => {
@@ -133,20 +109,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 				}
 			}
 		})
-
-		/* this.suscribeFilterControl$ = this.filterBy.valueChanges.subscribe((value => {
-			this.valueFilterBy = value!
-			this.validateIndexPaginate()
-			
-			if (!this.valueFilterBy) {
-				this.allListCountrys()
-			} 	
-			else {
-				this.filterByListCountry(this.valueFilterBy)
-			}
-			this.logicSearch()
-			
-		})) */
 
 		this.suscribeFilterControl$ = this.filterByControl.valueChanges.subscribe(({
 			next: value => {
@@ -165,12 +127,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 	}
 
-	/* allListCountrys() {
-		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe(data => {
-			this.sortListCountrys(data)
-			this.logicValueSort(data)
-		})
-	} */
 
 	allListCountrys() {
 		this.dataServiceAllCountry$ = this._apiService.getallCountrys().subscribe({
@@ -193,21 +149,7 @@ export class ControllersComponent implements OnDestroy, OnInit{
 		return listCountry.sort((a, b) => (a.area < b.area) ? 1 : -1)
 	}
 
-	/* searchCountry(country: string) {
-		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe(
-			data => {	
-				this.sortListCountrys(data)
-				this.logicValueSort(data)
-			},
-			error => {
-				if (!error) {
-					this._share.setListCountry(this.listCountrys=[])
-				}
-			}
-		)
-	} */
-
-
+	
 	searchCountry(country: string) {
 		this.dataServiceSearchCountry$ = this._apiService.searchCountry(country).subscribe({
 			next: data => {
@@ -301,7 +243,6 @@ export class ControllersComponent implements OnDestroy, OnInit{
 
 
 	
-	// establecer opciones de tamaño de página
 	setPageSizeOptions(setPageSizeOptionsInput: string) {
 		if (setPageSizeOptionsInput) {
 		this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
